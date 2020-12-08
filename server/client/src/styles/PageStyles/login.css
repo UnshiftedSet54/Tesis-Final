@@ -1,0 +1,47 @@
+.page-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+   background-color: green;
+
+}
+
+
+.card-container {
+    border-radius: 15px;
+    width: 30%;
+}
+
+@media (max-width: 1300px) {
+    .card-container {
+        width: 40%
+    }
+}
+
+@media (max-width: 1000px) {
+    .card-container {
+        width: 60%;
+    }
+
+}
+
+@media (max-width: 500px) {
+    .card-container {
+        width: 80%;
+    }
+}
+
+#nprogress .bar {
+    background: red !important;
+  }
+  
+  #nprogress .peg {
+    box-shadow: 0 0 10px red, 0 0 5px red !important;
+  }
+  
+  #nprogress .spinner-icon {
+    border-top-color: red !important;
+    border-left-color: red !important;
+  }

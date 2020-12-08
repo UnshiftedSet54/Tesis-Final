@@ -1,0 +1,21 @@
+.chips-rubro {
+    display: flex;
+  }
+  
+  .chips-container {
+    /* background-color: #d7186c; */
+    margin-left: 30px;
+    padding-left: 13px;
+    padding-right: 13px;
+    border-radius: 40px;
+    color: white;
+    display: flex;
+  }
+  
+  .icon-rubro-container {
+      margin-left: 3px;
+  }
+  
+  .chip-element-rubro {
+      margin-top: 3px;
+  }

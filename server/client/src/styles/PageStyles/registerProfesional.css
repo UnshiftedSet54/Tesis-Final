@@ -1,0 +1,43 @@
+.dropdown-menu.show{
+    width: 100%
+}
+ 
+
+.card-continer-profesional {
+
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+
+}
+
+.card-profesional {
+    width: 30%;
+    padding: 15px;
+}
+
+@media (max-width : 1000px ) {
+    .card-profesional {
+        width: 50%
+    }
+} 
+
+@media (max-width : 550px) {
+    .card-profesional {
+        width: 80%
+    }
+}
+
+@media (max-width: 300px) {
+
+    .card-profesional {
+        width: 95%;
+    }
+
+}
+
+.dropdown-register {
+    overflow: scroll;
+    height: 240px
+}
