@@ -6,6 +6,8 @@ import areaReducer from './areaReducer'
 import isRender from './isRenderReducer'
 import anuncios from './anunciosReducer'
 import useranuncios from './anunciosUser'
+import propuestaReducer from './propuestaReducer'
+import userInfoReducer from './userInfoReducer'
 
 export default combineReducers({
     error: errorReducer,
@@ -14,5 +16,7 @@ export default combineReducers({
     areas: areaReducer,
     isFirstRender: isRender,
     anuncios: anuncios,
-    useranuncios: useranuncios
+    useranuncios: useranuncios,
+    propuesta: propuestaReducer,
+    userInfo: userInfoReducer
 })

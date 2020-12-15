@@ -2,6 +2,9 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { connect } from "react-redux";
 
+import { useHistory } from "react-router-dom";
+
+
 /* Components */
 import NavBar from "../components/navBar";
 
@@ -49,6 +52,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Publicaciones = (props) => {
+
+  const history = useHistory();
+
   const [isEditMode, setIsEditMode] = useState([]);
 
   const [postInfo, setPostInfo] = useState('');
@@ -104,7 +110,7 @@ const Publicaciones = (props) => {
   }, []);
 
   useEffect(() => {
-    if (props.useranuncios.userAnuncios.length > 0) {
+    if (props.useranuncios.userAnuncios !== null) {
       setIsEditMode(props.useranuncios.userAnuncios.map(() => false));
       setAnuncios(props.useranuncios.userAnuncios);
     }
@@ -131,13 +137,17 @@ const Publicaciones = (props) => {
 
       props.onSendData(postInfo)
 
-      props.onHandleGetUserPost();
-
       setShow(false)
 
     }
 
   }, [postInfo])
+
+  const verPropuesta = (v) => {
+
+    history.push(`/propuesta/${v.anuncio_id}`)
+
+  }
 
   const renderButtonsInEditMode = (v, i) => (
     <div>
@@ -216,6 +226,13 @@ const Publicaciones = (props) => {
         onClick={() => onChangeEditMode(i)}
       >
         Editar
+      </Button>
+
+      <Button 
+      onClick = {() => verPropuesta(v) }
+      style={{ marginTop: "200px", marginLeft: "20px" }}
+      >
+        Ver propuestas
       </Button>
     </div>
   );

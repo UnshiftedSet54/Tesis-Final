@@ -25,10 +25,16 @@ const Navigation = ({ type, auth, onLogOut }) => {
     onLogOut();
   };
 
+  const renderName = () => {
+    if (auth.user !== null) {
+        return auth.user.username_freelancer
+    }
+  }
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Title style={{ textAlign: "center" }} as="h3">
-        {type !== "home" ? auth.user.username_freelancer : null}
+        {renderName()}
       </Popover.Title>
       <Popover.Content>
         <Container>
@@ -86,6 +92,7 @@ const Navigation = ({ type, auth, onLogOut }) => {
         <Navbar className="bg-success">
           <Navbar.Collapse>
             <Nav>
+              {  auth.user.isbussines ? (
               <Nav.Item>
                 <Button variant="success">
                   {" "}
@@ -94,6 +101,7 @@ const Navigation = ({ type, auth, onLogOut }) => {
                   </Link>
                 </Button>
               </Nav.Item>
+              ) : null  }
 
               <Nav.Item>
                 <Button variant="success">

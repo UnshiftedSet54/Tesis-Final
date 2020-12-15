@@ -1,0 +1,18 @@
+.listgroup-description {
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.list-group-container {
+
+    display: flex;
+    align-items: center;
+}
+
+.footer-container{
+
+    display: flex;
+    justify-content: space-between;
+
+}

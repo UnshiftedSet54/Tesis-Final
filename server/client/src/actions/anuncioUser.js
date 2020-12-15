@@ -44,15 +44,17 @@ export const clearMessage = () => {
 
 export const saveAnuncio = (data) => async (dispatch) => {
 
-    console.log("DATA A ENVIAR", data)
-
     let respuesta = await axios.post('/anunciosnegocios', data)
 
     console.log("RESPUESTA", respuesta.data.message)
 
     dispatch( { type: SAVE_ANUNCIO, payload: { message: respuesta.data.message   }  }  )
 
-    
+    dispatch({type: LOADING_ANUNCIO_BY_USER })
+
+    const resp = await axios.get('/personalposts')
+
+    dispatch({type: GET_ANUNCIO_BY_USER, payload: resp.data.anuncios })
 }
 
 

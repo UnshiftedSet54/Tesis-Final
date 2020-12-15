@@ -57,8 +57,8 @@ export const login = (username, password, history) => async (dispatch) => {
 };
 
 export const register = (user, history) => async (dispatch) => {
+  console.log("USER INFO", user)
   let body = JSON.stringify(user);
-
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -84,7 +84,12 @@ export const register = (user, history) => async (dispatch) => {
       payload: res.data,
     });
 
-    history.push("/registro/postregister");
+    if (user.isBussines) {
+      history.push('/home')
+    } else {
+      history.push("/registro/postregister");
+    }
+
   } catch (err) {
     if (err.response.data.message === "Usuario ya existente") {
       dispatch(

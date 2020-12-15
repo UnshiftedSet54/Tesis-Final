@@ -13,7 +13,8 @@ import {
   InputGroup,
   FormControl,
   Spinner,
-  Button
+  Button,
+  Modal
 } from "react-bootstrap";
 
 /* CSS */
@@ -27,6 +28,7 @@ import NavBar from "../components/navBar";
 import { getRubros } from "../actions/rubroActions";
 import { getAnuncios } from "../actions/anunciosActions";
 import { getAreaById } from '../actions/areasActions'
+import { sendPropuesta, cleanPropuesta, getPropuestas  } from "../actions/propuestaActions"
 
 /* Font-awesome */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,14 +48,25 @@ const HomeProfesional = ({
   anuncios,
   onGetAnuncios,
   onGetAreaById,
-
-
+  onSendPropuesta,
+  propuesta,
+  onCleanPropuesta,
+  onGetPropuestas
 }) => {
   const [chips, setChips] = useState([]);
 
   const [rubrosState, setRubrosState] = useState([]);
 
   const [valueInput, setValueInput] = useState("");
+
+  const [anunciosUsers, setAnunciosUsers] = useState([])
+
+  const [show, setShow] = useState(false);
+
+  const [descripcion, setDescripcion] = useState("")
+
+  const [currentSelected, setCurrentSelected] = useState("")
+
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -73,6 +86,7 @@ const HomeProfesional = ({
   useEffect(() => {
 
     onGetAnuncios();
+    onGetPropuestas(auth.user.username_freelancer)
 
     /* Hacer peticion si aun no tenemos los rubros en redux */
     if (rubros.rubros.length <= 0) {
@@ -101,9 +115,11 @@ const HomeProfesional = ({
   /* Use Effect solo para escuchar a anuncios */
   useEffect(() => {
 
-    if(anuncios.anuncios.length) {
-      console.log("ANUNCIOS", anuncios.anuncios)
+    if(anuncios.anuncios !== null) {
 
+      let anunciosFilter = anuncios.anuncios.filter(v => v.username_freelancer !== auth.user.username_freelancer  )
+
+      setAnunciosUsers(anunciosFilter)
 
     }
 
@@ -111,16 +127,11 @@ const HomeProfesional = ({
 
   useEffect(() => {
 
-    console.log("HISTORY", history)
-
-    console.log("CHIPS", chips)
-
     let query = "?"
       
     if(chips.length > 0) {
 
       chips.map( (v, i) => {
-        console.log("VALOR ", v)
         query += "b"  +i + "=" + v.id + "&"
       })
 
@@ -142,9 +153,18 @@ const HomeProfesional = ({
 
   }, [chips])
 
+  useEffect(() => {
+
+    if(propuesta.msg !== null) {
+      toast.success(propuesta.msg)
+      onCleanPropuesta()
+      onGetPropuestas(auth.user.username_freelancer)
+    }
+
+  }, [propuesta.msg])
+
 
   const getRubroByAnuncio = (rubroId) => {
-    console.log("RUBROS RUBROS", rubros.rubros.find(v => v.rubro_id == rubroId))
     return (
       <div>
         {rubros.rubros.find(v => v.rubro_id == rubroId).nombre} 
@@ -153,8 +173,6 @@ const HomeProfesional = ({
   }
 
   const changeCombo = (v, index, evento) => {
-
-    console.log("VALOR", v)
 
     if (evento.target.checked) {
       // if(chips.length > 2) {
@@ -175,8 +193,6 @@ const HomeProfesional = ({
   };
 
   const onSearch = () => {
-
-    console.log("VER VALOR", history.location)
 
     if (chips.length <= 0 && valueInput === "") {
       toast.warn("Ingrese algun filtro");
@@ -216,6 +232,46 @@ const HomeProfesional = ({
     setRubrosState(updateState);
 
   };
+
+  const sendPropuesta = (valor = currentSelected) => {
+
+    onSendPropuesta({
+      anuncio_id: valor.anuncio_id,
+      username_freelancer: valor.username_freelancer,
+      descripcion,
+      user_prop: auth.user.username_freelancer
+    })
+
+    setShow(false)
+
+  }
+
+  const modal = (v) => {
+
+    setShow(true)
+
+    setCurrentSelected(v)
+
+  }
+
+  const renderBoton = (v) => {
+
+    if (!auth.user.isbussines) {
+      if (propuesta.propuestasByUser !== undefined) {
+
+        const checkIfSend = propuesta.propuestasByUser.find(valor => valor.anuncio_id === v.anuncio_id )
+
+        if(checkIfSend) {
+          return null
+        } else {
+          return <Button variant="success" style = {{ borderRadius: '30px', height: '38px' }} onClick = { () => modal(v) } >Enviar Propuesta</Button>
+        }
+      }
+
+    } else {
+      return null
+    }
+  }
 
   return (
     <div>
@@ -343,16 +399,15 @@ const HomeProfesional = ({
             {/* </Row> */}
               
             {  /* Aqui ira el mapeo de los anuncios */ }   
-            { anuncios.anuncios.length > 0 ?  ( 
-              
-              anuncios.anuncios.map((v, i) => {
+            { anunciosUsers.length > 0 ?  ( 
+              anunciosUsers.map((v, i) => {
                 return (
                   
               <Card style = {{ marginTop: '30px', borderColor: 'green', borderWidth: '3px' }} className = "shadow">
               <Card.Body>
                 <div className = "titulo-container">
                 <Card.Title style = {{ width : '60%' }}>{ v.titulo }</Card.Title>
-                <Button variant="success" style = {{ borderRadius: '30px', height: '38px' }}>Enviar Propuesta</Button>
+                {   renderBoton(v) }
                 </div>
                 <Card.Text style = {{ marginTop: '10px'}}>
                   { v.descripcion }
@@ -397,18 +452,39 @@ const HomeProfesional = ({
             
           </Col>
         </Row>
+
+        <Modal
+        show={show}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Ingresa una descripcion de tu propuesta</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <FormControl as = "textarea" placeholder="Descripcion" onChange = { (e) => setDescripcion(e.target.value)  }  />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary">
+            Close
+          </Button>
+          <Button variant="primary" onClick = { () => sendPropuesta() }>Enviar</Button>
+        </Modal.Footer>
+      </Modal>
+
       </Container>
     </div>
   );
 };
 
 const mapStateToProps = (state) => {
-  const { auth, rubros, anuncios } = state;
+  const { auth, rubros, anuncios, propuesta } = state;
 
   return {
     auth,
     rubros,
     anuncios,
+    propuesta
   };
 };
 
@@ -422,6 +498,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     onGetAreaById: (id) => {
       dispatch(getAreaById(id))
+    },
+    onSendPropuesta: (data) => {
+      dispatch(sendPropuesta(data))
+    },
+    onCleanPropuesta: () => {
+      dispatch(cleanPropuesta())
+    },
+    onGetPropuestas: (id) => {
+      dispatch(getPropuestas(id))
     }
   };
 };

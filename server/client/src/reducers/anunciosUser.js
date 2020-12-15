@@ -1,7 +1,7 @@
 import { GET_ANUNCIO_BY_USER, LOADING_ANUNCIO_BY_USER, DELETE_ANUNCIO_BY_ID, UPDATE_ANUNCIO_BY_ID, CLEAR_MESSAGE, SAVE_ANUNCIO } from '../actions/types'
 
 const initialState = {
-    userAnuncios: [],
+    userAnuncios: null,
     isLoading: false,
     msg: ''
 };

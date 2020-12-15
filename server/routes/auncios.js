@@ -69,6 +69,8 @@ router.post("/anunciosnegocios", async (req, res) => {
 
     const { area_id, rubro_id, titulo, descripcion, disponibilidad } = req.body
 
+    console.log("REQ USER", req.user)
+
     
     const resp = await pool.query("INSERT INTO anuncios (username_freelancer, titulo, descripcion, disponibilidad) VALUES ($1, $2, $3, $4) RETURNING *", 
     [

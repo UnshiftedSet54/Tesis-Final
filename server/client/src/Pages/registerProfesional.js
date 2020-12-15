@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
 
+import { storage } from "../firebase/index"
+
 
 /* React Boostrap */
 import {
@@ -33,6 +35,7 @@ import "../styles/PageStyles/registerProfesional.css";
 import { Spring, Transition } from "react-spring/renderprops";
 import { register } from "../actions/authAction";
 import { ToastContainer, toast } from "react-toastify";
+import Axios from "axios";
 
 
 const RegisterProfesional = (props) => {
@@ -78,13 +81,6 @@ const RegisterProfesional = (props) => {
     "Zulia"
     ]);
 
-  const [userInfo, setUserInfo] = useState({
-    name: "",
-    username: "",
-    password: "",
-    state: "",
-  });
-
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [disableButton, setDisableButto] = useState(true);
@@ -102,6 +98,17 @@ const RegisterProfesional = (props) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
   let copyStates = [...states]
+
+  const [pdf, setPdf] = useState("")
+
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    username: "",
+    password: "",
+    state: "",
+    isBussines: false,
+  });
+
 
   const stateChange = (v) => {
     setSelectedState(v);
@@ -127,7 +134,7 @@ const RegisterProfesional = (props) => {
     else if (userInfo.password !== confirmPassword && userInfo.password.length > 0) {
       errorHandler(setConfirmPasswordError, "Contraseñas no coinciden");
     } else {
-      props.onRegister(userInfo, props.history)
+      props.onRegister({ ...userInfo,  pdf_url: pdf  }, props.history)
 
     }
   };
@@ -143,6 +150,39 @@ const RegisterProfesional = (props) => {
 
     checkForm();
   };
+
+  const uplodadFile = async (files) => {
+
+    console.log("EVENT", files[0])
+
+    const formData = new FormData()
+
+    formData.append("file", files[0])
+    formData.append("upload_preset", "hobah1xn")
+
+    const uploadTask = storage.ref(`pdf/${files[0].name}`).put(files[0]);
+
+    uploadTask.on(
+      "state_changed",
+      snapshot => {},
+      error => {
+        console.log(error)
+      },
+      () => {
+        storage
+          .ref("pdf")
+          .child(files[0].name)
+          .getDownloadURL()
+          .then(url => {
+            console.log("URL", url)
+            setPdf(url)
+          })
+      }
+    )
+
+  //  setPdf(data.data.secure_url)
+
+  } 
 
   return (
     <div style={{ height: "100vh" }}>
@@ -314,6 +354,8 @@ const RegisterProfesional = (props) => {
               </Dropdown.Menu>
             </Dropdown>
 
+            <input type = "file" onChange = { (e) =>  uplodadFile(e.target.files) } />
+            
             <label style={{ fontSize: "14px" }}>
               <input
                 type="checkbox"

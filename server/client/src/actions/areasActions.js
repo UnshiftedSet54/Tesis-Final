@@ -24,7 +24,6 @@ export const sendAreas = (data, user, history) => async (dispatch) => {
 
   dispatch({ type : SEND_AREAS, payload: resp.data })
 
-  console.log("RESPUESTA", resp)
 
   history.push('/dashboard')
 }
