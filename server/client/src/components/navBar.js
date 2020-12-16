@@ -101,7 +101,16 @@ const Navigation = ({ type, auth, onLogOut }) => {
                   </Link>
                 </Button>
               </Nav.Item>
-              ) : null  }
+              ) : (
+                <Nav.Item>
+                <Button variant="success">
+                  {" "}
+                  <Link to="/usuariopropuestas" style={{ color: "white" }}>
+                    Mis Propuestas
+                  </Link>
+                </Button>
+              </Nav.Item>
+              )  }
 
               <Nav.Item>
                 <Button variant="success">

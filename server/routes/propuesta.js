@@ -6,7 +6,7 @@ router.post('/propuesta', async (req, res) => {
 
     const { anuncio_id, username_freelancer, descripcion, user_prop } = req.body
 
-    await pool.query('INSERT INTO propuesta (anuncio_id, username_freelancer, descripcion, user_prop) VALUES($1, $2, $3, $4)', [anuncio_id, username_freelancer, descripcion, user_prop])
+    await pool.query('INSERT INTO propuesta (anuncio_id, username_freelancer, descripcion, user_prop, isread) VALUES($1, $2, $3, $4, $5)', [anuncio_id, username_freelancer, descripcion, user_prop, false])
 
     return res.status(200).json({ message: 'Propuesta enviada exitosamente' })
 
@@ -31,5 +31,15 @@ router.get('/propuestabyanuncio/:id', async (req, res) => {
     return res.status(200).json({ propuestas: resp.rows })
 
 })
+
+router.put('/propuesta/:id', async (req, res) => {
+
+    const { id } = req.params
+
+    await pool.query('UPDATE PROPUESTA SET isread = true WHERE propuesta_id = $1', [id])
+
+    return res.status(200).json({ msg: "Editado exitosamente" })
+
+})  
 
 module.exports = router

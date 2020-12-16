@@ -12,6 +12,7 @@ router.get('/userinfo/:id', async (req, res) => {
    let result = 
     {
         username_freelancer: resp.rows[0].username_freelancer,
+        username_nombre: resp.rows[0].nombre_completo,
         estado: resp.rows[0].estado,
         pdf_url: resp.rows[0].pdf_url,
         rubro_id: resp.rows[0].rubro_id,

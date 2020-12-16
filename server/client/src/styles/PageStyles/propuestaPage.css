@@ -14,5 +14,19 @@
 
     display: flex;
     justify-content: space-between;
+}
 
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flex-child-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-download {
+    display:flex;
 }

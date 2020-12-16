@@ -1,9 +1,10 @@
-import { SEND_PROPUESTA, CLEAN_PROPUESTA, GET_PROPUESTAS, GET_PROPUESTA_BY_ANUNCIO } from "../actions/types";
+import { SEND_PROPUESTA, CLEAN_PROPUESTA, GET_PROPUESTAS, GET_PROPUESTA_BY_ANUNCIO, UPDATED_PROPUESTA, CLEAN_UPDATED } from "../actions/types";
 
 const initialState = {
   msg: null,
   propuestasByUser: null,
-  propuestaByAnuncio: null
+  propuestaByAnuncio: null,
+  updated: false
 };
 
 export default function (state = initialState, action) {
@@ -27,6 +28,16 @@ export default function (state = initialState, action) {
         return {
           ...state,
           propuestaByAnuncio: action.payload
+        }
+    case UPDATED_PROPUESTA:
+        return {
+          ...state,
+          updated: true
+        }
+    case CLEAN_UPDATED:
+        return {
+          ...state,
+          updated: false
         }
     default:
         return state;

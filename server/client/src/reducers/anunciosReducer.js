@@ -2,7 +2,8 @@ import { GET_ANUNCIOS, LOADING_ANUNCIOS } from '../actions/types'
 
 const initialState = {
     anuncios: [],
-    isLoading: false
+    isLoading: false,
+    notificationsPropuestas : 0
 };
   
 export default function (state = initialState, action) {
@@ -11,8 +12,9 @@ export default function (state = initialState, action) {
 
         case GET_ANUNCIOS: 
         return {
-            anuncios: action.payload,
-            isLoading: false
+            anuncios: action.payload.anuncios,
+            isLoading: false,
+            notificationsPropuestas: action.payload.notificationsPropuestas
         }
         case LOADING_ANUNCIOS:
             return {

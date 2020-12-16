@@ -3,6 +3,8 @@ const router = Router();
 const pool = require("../db");
 
 router.get("/anunciosnegocios", async (req, res) => {
+    
+   let propuestasNotRead = await pool.query("SELECT * FROM propuesta where username_freelancer = $1 AND isread = $2", [req.user.username_freelancer, false])
 
     let array = Object.keys(req.query)
         .map((key) => req.query[key] )
@@ -28,7 +30,7 @@ router.get("/anunciosnegocios", async (req, res) => {
 
 
     if ( array.includes("0") && (req.query.value === undefined || req.query.value === "" )  ) {
-        return res.status(200).json({ anuncios: final_result })
+        return res.status(200).json({ anuncios: final_result, notificationsPropuestas: propuestasNotRead.rows.length  })
 
     }
 
@@ -40,7 +42,7 @@ router.get("/anunciosnegocios", async (req, res) => {
                 return array.includes(v.rubro_id.toString())
               })
                        
-             return res.status(200).json({ anuncios: resultado_final })
+             return res.status(200).json({ anuncios: resultado_final, notificationsPropuestas: propuestasNotRead.rows.length })
 
         }  else {
 
@@ -48,7 +50,7 @@ router.get("/anunciosnegocios", async (req, res) => {
                return array.includes(v.rubro_id.toString()) && v.titulo.toLowerCase().includes(req.query.value.toLowerCase()) 
              })
                      
-            return res.status(200).json({ anuncios: resultado_final })
+            return res.status(200).json({ anuncios: resultado_final, notificationsPropuestas: propuestasNotRead.rows.length })
         }
 
     }

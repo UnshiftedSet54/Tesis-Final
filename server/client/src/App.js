@@ -27,6 +27,7 @@ import Publicaciones from "./Pages/publicaciones";
 import Proyectos from "./Pages/proyectos";
 import ChatPage from "./Pages/chatPage"
 import PropuestaPage from "./Pages/propuestaPage"
+import UserPropuestas from "./Pages/userPropuestas"
 
 function App() {
   return (
@@ -58,7 +59,7 @@ function App() {
         <PrivateRoute path = "/micuenta" component={MiCuenta} />
         <PrivateRoute path = "/miperfil" component={MiPerfil} />
         <PrivateRoute path = "/propuesta/:id" component={PropuestaPage} />
-
+        <PrivateRoute path = "/usuariopropuestas" component={UserPropuestas} />
       </div>
     </BrowserRouter>
   );
