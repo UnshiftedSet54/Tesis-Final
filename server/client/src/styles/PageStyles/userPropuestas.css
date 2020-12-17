@@ -1,0 +1,9 @@
+.propuestas-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bagde-container {
+    display: flex;
+    align-items: center;
+}
