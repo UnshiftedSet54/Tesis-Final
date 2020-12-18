@@ -27,6 +27,7 @@ export const SET_RENDER = 'SET_RENDER'
 /* Anuncios */
 export const GET_ANUNCIOS = 'GET_ANUNCIOS'
 export const LOADING_ANUNCIOS = 'LOADING_ANUNCIOS'
+export const CHANGE_NOTIFICATION = 'CHANGE_NOTIFICATION'
 
 /* User anuncios */
 export const GET_ANUNCIO_BY_USER = 'GET_ANUNCIO_BY_USER'
@@ -42,7 +43,8 @@ export const CLEAN_PROPUESTA = "CLEAN_PROPUESTA"
 export const GET_PROPUESTAS = "GET_PROPUESTAS"
 export const GET_PROPUESTA_BY_ANUNCIO = "GET_PROPUESTA_BY_ANUNCIO"
 export const UPDATED_PROPUESTA = "UPDATED_PROPUESTA"
-export const CLEAN_UPDATED = "CLEAN_UPDATED"
+export const CLEAN_UPDATED = "CLEAN_UPDATED";
+export const CLEAN_PROPUESTA_BY_ANUNCIO = 'CLEAN_PROPUESTA_BY_ANUNCIO'
 
 /* User info cuando (usuario no logeado) */
 export const GET_USER_INFO = 'GET_USER_INFO'

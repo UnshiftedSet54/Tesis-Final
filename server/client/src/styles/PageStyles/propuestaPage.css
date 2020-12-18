@@ -30,3 +30,8 @@
 .flex-download {
     display:flex;
 }
+
+.description-container {
+    display: flex;
+    justify-content: space-between;
+}

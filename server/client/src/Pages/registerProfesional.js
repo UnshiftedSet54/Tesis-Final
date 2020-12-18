@@ -37,7 +37,6 @@ import { register } from "../actions/authAction";
 import { ToastContainer, toast } from "react-toastify";
 import Axios from "axios";
 
-
 const RegisterProfesional = (props) => {
 
   useEffect(() => {
@@ -95,6 +94,9 @@ const RegisterProfesional = (props) => {
 
   const [stateError, setStateError] = useState(null);
 
+  const [pdfError, setPdfError] = useState(null);
+
+
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
   let copyStates = [...states]
@@ -118,24 +120,24 @@ const RegisterProfesional = (props) => {
   const checkForm = () => {
     if (userInfo.name === "") {
       errorHandler(setNameError, "Por favor, ingrese un nombre");
-      console.log("User vacio");
     }
     else if (userInfo.username === "") {
       errorHandler(setUsernameError, "Por favor, ingrese un nombre de usuario");
-      console.log("Username vacio");
     }
     else if (userInfo.password === "") {
       errorHandler(setPasswordError, "Por favor, ingrese una contraseña");
-      console.log("Password vacio");
     }
     else if (userInfo.state === "") {
       errorHandler(setStateError, "Por favor, ingrese una fecha");
     }
     else if (userInfo.password !== confirmPassword && userInfo.password.length > 0) {
       errorHandler(setConfirmPasswordError, "Contraseñas no coinciden");
+    } else if (pdf === "") {
+      errorHandler(setPdfError, "Por favor, ingrese un curriculum")
+    } else if (pdf.type == "application/msword") {
+      errorHandler(setPdfError, "Por favor, ingrese un curriculum en pdf")
     } else {
       props.onRegister({ ...userInfo,  pdf_url: pdf  }, props.history)
-
     }
   };
 
@@ -153,34 +155,7 @@ const RegisterProfesional = (props) => {
 
   const uplodadFile = async (files) => {
 
-    console.log("EVENT", files[0])
-
-    const formData = new FormData()
-
-    formData.append("file", files[0])
-    formData.append("upload_preset", "hobah1xn")
-
-    const uploadTask = storage.ref(`pdf/${files[0].name}`).put(files[0]);
-
-    uploadTask.on(
-      "state_changed",
-      snapshot => {},
-      error => {
-        console.log(error)
-      },
-      () => {
-        storage
-          .ref("pdf")
-          .child(files[0].name)
-          .getDownloadURL()
-          .then(url => {
-            console.log("URL", url)
-            setPdf(url)
-          })
-      }
-    )
-
-  //  setPdf(data.data.secure_url)
+    setPdf(files[0])
 
   } 
 
@@ -354,7 +329,23 @@ const RegisterProfesional = (props) => {
               </Dropdown.Menu>
             </Dropdown>
 
-            <input type = "file" onChange = { (e) =>  uplodadFile(e.target.files) } />
+            <input type = "file" onChange = { (e) =>  uplodadFile(e.target.files) } style = {{ marginBottom: '10px' }} />
+
+            <Transition
+              items={pdfError !== null}
+              from={{ opacity: 0 }}
+              enter={{ opacity: 1 }}
+              leave={{ opacity: 0 }}
+            >
+              {(show) =>
+                show &&
+                ((props) => (
+                  <div style={props}>
+                    <Alert variant="danger">{pdfError}</Alert>
+                  </div>
+                ))
+              }
+            </Transition>
             
             <label style={{ fontSize: "14px" }}>
               <input

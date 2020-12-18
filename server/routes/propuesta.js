@@ -26,7 +26,7 @@ router.get('/propuestabyanuncio/:id', async (req, res) => {
 
     const { id } = req.params
 
-    let resp = await pool.query('SELECT * FROM propuesta WHERE anuncio_id = $1', [id])
+    let resp = await pool.query('SELECT * FROM propuesta WHERE anuncio_id = $1 ORDER BY propuesta_id desc', [id])
 
     return res.status(200).json({ propuestas: resp.rows })
 

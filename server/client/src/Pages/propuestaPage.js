@@ -3,13 +3,13 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import { connect } from "react-redux";
 
-import { Button, ListGroup, Modal } from "react-bootstrap";
+import { Button, ListGroup, Modal, Badge } from "react-bootstrap";
 
 import { useParams } from "react-router-dom";
 
 import NavBar from "../components/navBar";
 
-import { getPropuestaByAnuncio, updatePropuesta, cleanUpdate } from "../actions/propuestaActions";
+import { getPropuestaByAnuncio, updatePropuesta, cleanUpdate, cleanPropuestaByAnuncio } from "../actions/propuestaActions";
 
 import "../styles/PageStyles/propuestaPage.css";
 
@@ -18,6 +18,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 import { cleanUserInfo, getUserInfo } from "../actions/userInfoActions";
+import { changeNotification } from "../actions/anunciosActions";
+
 
 const PropuestaPage = ({
   onGetByAnuncio,
@@ -27,7 +29,9 @@ const PropuestaPage = ({
   onCleanUserInfo,
   onUpdatePropuesta,
   isUpdated,
-  onCleanUpdate
+  onCleanUpdate,
+  onChangeNotification,
+  onCleanPropuestaByAnuncio
 }) => {
   const [show, setShow] = useState(false);
 
@@ -52,6 +56,12 @@ const PropuestaPage = ({
     }
   }, [isUpdated, v])
 
+  useEffect(() => {
+      return () => {
+        onCleanPropuestaByAnuncio()
+      }
+  }, [])
+  
   const openModal = (v) => {
     setV(v)
     onUpdatePropuesta(v.propuesta_id)
@@ -60,7 +70,8 @@ const PropuestaPage = ({
   const cleanUserInfo = () => {
     setShow(false)
     onCleanUserInfo()
-      
+    onChangeNotification()
+    onGetByAnuncio(id);
   }
 
   const renderModal = () => {
@@ -129,8 +140,16 @@ const PropuestaPage = ({
                 className="listgroup-description"
               >
                 <h1 style={{ textAlign: "center" }}>Descripcion</h1>
+                <div className = "description-container">
+
                 <div style={{ marginBottom: "10px", marginTop: "20px" }}>
                   {propuesta.descripcion}
+                </div>
+
+                <div style = {{ marginRight: '40px' }}>
+                  { propuesta.isread ? <Badge style = {{ padding: '5px' }} variant="success">Leido</Badge> : <Badge style = {{ padding: '5px' }} variant="warning">No leido</Badge>  }
+                </div>
+
                 </div>
                 <div className="footer-container">
                   <label>Enviado por: {propuesta.user_prop} </label>
@@ -181,6 +200,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     onCleanUpdate: () => {
       dispatch(cleanUpdate())
+    },
+    onChangeNotification: () => {
+      dispatch(changeNotification())
+    },
+    onCleanPropuestaByAnuncio: () => {
+      dispatch(cleanPropuestaByAnuncio())
     }
   };
 };

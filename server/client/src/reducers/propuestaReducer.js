@@ -1,4 +1,4 @@
-import { SEND_PROPUESTA, CLEAN_PROPUESTA, GET_PROPUESTAS, GET_PROPUESTA_BY_ANUNCIO, UPDATED_PROPUESTA, CLEAN_UPDATED } from "../actions/types";
+import { SEND_PROPUESTA, CLEAN_PROPUESTA, GET_PROPUESTAS, GET_PROPUESTA_BY_ANUNCIO, UPDATED_PROPUESTA, CLEAN_UPDATED, CLEAN_PROPUESTA_BY_ANUNCIO } from "../actions/types";
 
 const initialState = {
   msg: null,
@@ -38,6 +38,11 @@ export default function (state = initialState, action) {
         return {
           ...state,
           updated: false
+        }
+    case CLEAN_PROPUESTA_BY_ANUNCIO:
+        return {
+          ...state,
+          propuestaByAnuncio: null
         }
     default:
         return state;

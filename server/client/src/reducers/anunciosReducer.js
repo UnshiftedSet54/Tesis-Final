@@ -1,4 +1,4 @@
-import { GET_ANUNCIOS, LOADING_ANUNCIOS } from '../actions/types'
+import { GET_ANUNCIOS, LOADING_ANUNCIOS, CHANGE_NOTIFICATION } from '../actions/types'
 
 const initialState = {
     anuncios: [],
@@ -20,6 +20,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 isLoading: true  
+            }
+        case CHANGE_NOTIFICATION:
+            return {
+                ...state,
+                notificationsPropuestas: state.notificationsPropuestas - 1
             }
         default: 
             return state

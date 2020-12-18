@@ -18,7 +18,6 @@ const UserPropuestas = ({ auth, onGetPropuesta, propuestas }) => {
 
   const renderList = () => {
     if (propuestas !== null) {
-      console.log("PROPIESTAS", propuestas);
 
       return (
         <ListGroup>

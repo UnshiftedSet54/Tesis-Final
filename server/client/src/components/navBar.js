@@ -13,6 +13,7 @@ import {
   Container,
   Col,
   Row,
+  Badge
 } from "react-bootstrap";
 
 /* Router */
@@ -20,7 +21,7 @@ import { Link } from "react-router-dom";
 
 import { logOut } from "../actions/authAction";
 
-const Navigation = ({ type, auth, onLogOut }) => {
+const Navigation = ({ type, auth, onLogOut, anuncios }) => {
   const logOut = () => {
     onLogOut();
   };
@@ -98,6 +99,7 @@ const Navigation = ({ type, auth, onLogOut }) => {
                   {" "}
                   <Link to="/mispublicaciones" style={{ color: "white" }}>
                     Mis publicaciones
+                    <Badge variant = "light" style = {{ marginLeft: '5px' }}>{ anuncios }</Badge>
                   </Link>
                 </Button>
               </Nav.Item>
@@ -130,7 +132,7 @@ const Navigation = ({ type, auth, onLogOut }) => {
                 <Button variant="success">
                   {" "}
                   <Link to="/login" style={{ color: "white" }}>
-                    ??
+                    Conversaciones
                   </Link>
                 </Button>
               </Nav.Item>
@@ -159,10 +161,11 @@ const Navigation = ({ type, auth, onLogOut }) => {
 };
 
 const mapStateToProps = (state) => {
-  const { auth } = state;
+  const { auth, anuncios } = state;
 
   return {
     auth,
+    anuncios: anuncios.notificationsPropuestas
   };
 };
 
