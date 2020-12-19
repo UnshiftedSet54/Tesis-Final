@@ -64,26 +64,8 @@ export const register = (user, history) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOADING });
 
-    const uploadTask = storage.ref(`pdf/${user.username}${user.pdf_url.name}`).put(user.pdf_url);
-
-      uploadTask.on(
-      "state_changed",
-      snapshot => {},
-      error => {
-        console.log(error)
-      },
-      () => {
-        storage
-          .ref("pdf")
-          .child(user.username+user.pdf_url.name)
-          .getDownloadURL()
-          .then( async url => {
-           let body = {
-              ...user,
-              pdf_url: url
-            }
-
-            body = JSON.stringify(body);
+    if (user.isBussines) {
+      let body = JSON.stringify(user);
             const config = {
               headers: {
                 "Content-Type": "application/json",
@@ -111,10 +93,61 @@ export const register = (user, history) => async (dispatch) => {
             } else {
               history.push("/registro/postregister");
             }
+    } else {
 
-          })
-      }
-    )
+      const uploadTask = storage.ref(`pdf/${user.username}${user.pdf_url.name}`).put(user.pdf_url);
+  
+        uploadTask.on(
+        "state_changed",
+        snapshot => {},
+        error => {
+          console.log(error)
+        },
+        () => {
+          storage
+            .ref("pdf")
+            .child(user.username+user.pdf_url.name)
+            .getDownloadURL()
+            .then( async url => {
+             let body = {
+                ...user,
+                pdf_url: url
+              }
+  
+              body = JSON.stringify(body);
+              const config = {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              };
+  
+              let res = await axios.post("/registro", body, config);
+  
+              localStorage.setItem(
+                "user",
+                JSON.stringify({
+                  ...res.data.user,
+                })
+              );
+  
+              dispatch({ type: USER_LOADED });
+  
+              dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data,
+              });
+  
+              if (user.isBussines) {
+                history.push('/home')
+              } else {
+                history.push("/registro/postregister");
+              }
+  
+            })
+        }
+      )
+    }
+
 
   } catch (err) {
     if (err.response.data.message === "Usuario ya existente") {

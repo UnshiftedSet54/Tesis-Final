@@ -19,6 +19,7 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 import { cleanUserInfo, getUserInfo } from "../actions/userInfoActions";
 import { changeNotification } from "../actions/anunciosActions";
+import { createChat } from "../actions/chatActions"
 
 
 const PropuestaPage = ({
@@ -31,7 +32,10 @@ const PropuestaPage = ({
   isUpdated,
   onCleanUpdate,
   onChangeNotification,
-  onCleanPropuestaByAnuncio
+  onCleanPropuestaByAnuncio,
+  history,
+  onCreateChat,
+  chat
 }) => {
   const [show, setShow] = useState(false);
 
@@ -61,6 +65,13 @@ const PropuestaPage = ({
         onCleanPropuestaByAnuncio()
       }
   }, [])
+
+  useEffect(() => {
+
+    if(chat !== null) {
+      history.push(`/chat/${chat}`) 
+    }
+  }, [chat])
   
   const openModal = (v) => {
     setV(v)
@@ -72,6 +83,15 @@ const PropuestaPage = ({
     onCleanUserInfo()
     onChangeNotification()
     onGetByAnuncio(id);
+  }
+
+  const createChat = () => {
+
+    /* En el back ya está el usuario logeado */
+    onCreateChat({
+      username_freelancer_two: userInfo.username_freelancer
+    })
+
   }
 
   const renderModal = () => {
@@ -123,6 +143,7 @@ const PropuestaPage = ({
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary">Guardar en favoritos</Button>
+            <Button variant = "primary" onClick = { () => createChat() }>Iniciar Conversacion</Button>
           </Modal.Footer>
         </Modal>
       );
@@ -176,11 +197,12 @@ const PropuestaPage = ({
 };
 
 const mapStateToProps = (state) => {
-  const { propuesta, userInfo } = state;
+  const { propuesta, userInfo, chat } = state;
   return {
     isUpdated: propuesta.updated,
     propuestas: propuesta.propuestaByAnuncio,
     userInfo: userInfo.userInfo,
+    chat: chat.chatId
   };
 };
 
@@ -206,6 +228,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onCleanPropuestaByAnuncio: () => {
       dispatch(cleanPropuestaByAnuncio())
+    },
+    onCreateChat: (info) => {
+      dispatch(createChat(info))
     }
   };
 };

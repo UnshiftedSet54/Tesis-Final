@@ -43,6 +43,7 @@ import {
   Card,
   Modal,
   Dropdown,
+  Alert
 } from "react-bootstrap";
 
 import "../styles/PageStyles/anuniosUser.css";
@@ -64,6 +65,8 @@ const Publicaciones = (props) => {
     nombre: "Seleccionar rubro",
   });
 
+  const [selectedRubroError, setSelectedRubroError] = useState("")
+
   const [anuncios, setAnuncios] = useState([]);
 
   const [show, setShow] = useState(false);
@@ -78,9 +81,19 @@ const Publicaciones = (props) => {
 
   const [titulo, setTitulo] = useState('')
 
+  const [tituloError, setTituloError] = useState('')
+
   const [descripcion, setDescripcion] = useState('')
 
+  const [descriptionError, setDescriptionError] = useState('')
+
   const [disponibilidad, setDisponibilidad] = useState('')
+
+  const [disponibilidadError, setDisponibilidadError] = useState('')
+
+  const [chipsError, setChipsError] = useState('')
+
+  const [isDisabled, setIsDisabled] = useState(false)
 
   const returnIcon = () => {
     return <FontAwesomeIcon icon={faPlus} />;
@@ -138,10 +151,40 @@ const Publicaciones = (props) => {
       props.onSendData(postInfo)
 
       setShow(false)
-
     }
 
   }, [postInfo])
+
+  useEffect(() => {
+
+    if(!show) {
+
+      setChips([])
+
+      setSelectedRubro({
+        rubro_id: 0,
+        nombre: "Seleccionar rubro",
+      })
+
+      setTitulo("")
+      setDescripcion("")
+      setDisponibilidad("")
+
+    }
+
+  }, [show])
+
+  useEffect(() => {
+
+    if (chips.length === 3) {
+      setIsDisabled(true)
+    } if (chips.length < 3) {
+      setIsDisabled(false)
+    }
+
+  }, [chips])
+
+
 
   const verPropuesta = (v) => {
 
@@ -287,18 +330,20 @@ const Publicaciones = (props) => {
   /* FINALIZA SUGGEST */
 
   const addTag = () => {
-
-    console.log("VALOR", value)
-
-    console.log("AREAS", props.areas.find(v => v.nombre === value))
-
+    
     let newValue = props.areas.find(v => v.nombre === value)
+    
+    let checkIfExists = chips.find(v => v.area_id === newValue.area_id )
 
-    setChips((oldValues) => [...oldValues, newValue]);
+    if(!checkIfExists) {
+      setChips((oldValues) => [...oldValues, newValue]);
+    }
     setValue("")
+
   };
 
   const deleteChip = (i) => {
+
 
     setChips(chips.filter((v, index) => index !== i));
 
@@ -306,13 +351,47 @@ const Publicaciones = (props) => {
 
   const sendData = () => {
 
-    setPostInfo({
-      titulo,
-      descripcion,
-      rubro_id: selectedRubro.rubro_id,
-      area_id : chips.map(v => v.area_id ),
-      disponibilidad
-    })
+    if (titulo === "") {
+      setTituloError("Por favor ingrese un titulo")
+      setTimeout(() => {
+        setTituloError("")
+      }, 2000)
+    } if (descripcion === "" ) {
+      setDescriptionError("Por favor ingrese una descripcion")
+      setTimeout(() => {
+        setDescriptionError("")
+      }, 2000)
+    } if (selectedRubro.nombre == "Seleccionar rubro") {
+
+      setSelectedRubroError("Por favor ingrese algun rubro")
+      setTimeout(() => {
+        setSelectedRubroError("")
+      }, 2000)
+
+    } if (chips.length === 0) {
+      setChipsError("Error, ingrese chips")
+      setTimeout(() => {
+        setChipsError("")
+      }, 2000)
+
+    } if (disponibilidad === "") {
+
+      setDisponibilidadError("Error, ingrese algun valor")
+      setTimeout(() => {
+        setDisponibilidadError("")
+      }, 2000)
+
+    }  else {
+      setPostInfo({
+        titulo,
+        descripcion,
+        rubro_id: selectedRubro.rubro_id,
+        area_id : chips.map(v => v.area_id ),
+        disponibilidad
+      })
+
+    }
+
 
   }
 
@@ -383,14 +462,23 @@ const Publicaciones = (props) => {
               <Modal.Title>Agregar anuncio</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <FormControl placeholder="Titulo" onChange = { (e) => setTitulo(e.target.value)  } />
+              <FormControl placeholder="Titulo" value = {titulo} onChange = { (e) => setTitulo(e.target.value) } style = {{ marginBottom: '10px' }} />
+
+              { tituloError !== "" ? <Alert variant = "danger">{tituloError}</Alert> : null  }
+              
               <FormControl
+                value = {descripcion}
                 style={{ marginTop: "20px" }}
                 placeholder="Descripcion"
-                onChange = { (e) => setDescripcion(e.target.value)  }
+                onChange = { (e) => setDescripcion(e.target.value) } 
+                style = {{ marginBottom: '10px' }}
               />
 
+              { descriptionError !== "" ? <Alert variant = "danger">{descriptionError}</Alert> : null  }
+
               {renderItem()}
+
+              { selectedRubroError !== "" ? <Alert variant = "danger">{selectedRubroError}</Alert> : null  }
 
               {isRenderInput ? (
                 <Row>
@@ -406,13 +494,13 @@ const Publicaciones = (props) => {
                     />
                   </Col>
                   <Col>
-                    <Button onClick={() => addTag()}>Añadir</Button>
+                    <Button disabled = {isDisabled} onClick={() => addTag()}>Añadir</Button>
                   </Col>
                 </Row>
               ) : null}
 
               {chips.length > 0 ? (
-                <div className="chips-rubro">
+                <div className="chips-rubro" style = {{ marginTop: '10px' }}>
                   {chips.map((v, i) => {
                     return (
                       <div
@@ -433,11 +521,17 @@ const Publicaciones = (props) => {
                 </div>
               ) : null}
 
+              { chipsError !== "" ? <Alert variant = "danger">{chipsError}</Alert> : null  }
+
               <FormControl
-                style={{ marginTop: "20px" }}
+                value = {disponibilidad}
+                style={{ marginTop: "20px", marginBottom: '10px' }}
                 placeholder="Disponibilidad"
                 onChange = { (e) => setDisponibilidad(e.target.value) }
               />
+
+              { disponibilidadError !== "" ? <Alert variant = "danger">{disponibilidadError}</Alert> : null  }
+
             </Modal.Body>
             <Modal.Footer>
               <Button variant="primary" onClick = { () => sendData() }>Guardar</Button>

@@ -46,6 +46,7 @@ initializePassport(passport)
 io.on('connection', (socket) => {
 
     socket.on('join', ({room}) => {
+
         socket.join(room) 
 
         socket.room = room
@@ -54,7 +55,11 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', async (message) => {
 
-    //    await pool.query("INSERT INTO chat (chat_id, from_user, to_user, texto) VALUES ($1, $2, $3, $4)", [socket.room, message.username, message.toUser, message.texto])
+        console.log("MESSAGE", message)
+
+        console.log("SOCKET ROOM", socket.room)
+
+       await pool.query("INSERT INTO mensajes (chat_id, username_freelancer_one, username_freelancer_two, texto) VALUES ($1, $2, $3, $4)", [socket.room, message.username, message.toUser, message.texto])
 
         socket.broadcast.to(socket.room).emit('message', { user: message.username, text: message.texto })
 
@@ -75,6 +80,7 @@ app.use(require('./routes/area'))
 app.use(require('./routes/auncios'))
 app.use(require('./routes/propuesta'))
 app.use(require('./routes/userinfo'))
+app.use(require('./routes/chats'))
 
 const PORT = process.env.PORT || 5000
 

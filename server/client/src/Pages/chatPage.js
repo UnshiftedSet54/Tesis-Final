@@ -9,6 +9,8 @@ import {  Button, Form } from 'react-bootstrap'
 
 import axios from 'axios'
 
+import { getChat } from "../actions/chatActions"
+
 let socket;
 
 const ChatPage = (props) => {
@@ -16,6 +18,8 @@ const ChatPage = (props) => {
     const [valor, setValor] = useState('')
 
     useEffect (() => {
+
+        props.onGetChatInfo(props.match.params.id)
 
         socket = io('')
 
@@ -41,8 +45,7 @@ const ChatPage = (props) => {
     const enviarMensaje = (e) => {
 
         e.preventDefault()
-            console.log("VALOR", valor)
-            socket.emit('sendMessage', { texto : valor, room: props.match.params.id, username: props.auth.user.username_freelancer, toUser: 'carlos' })
+            socket.emit('sendMessage', { texto : valor, room: props.match.params.id, username: props.auth.user.username_freelancer, toUser: props.auth.user.username_freelancer === props.chat.username_freelancer_one ? props.chat.username_freelancer_two : props.chat.username_freelancer_one })
         }
 
   return (
@@ -62,12 +65,21 @@ const ChatPage = (props) => {
 
 const mapStateToProps = (state) => {
 
-    const { auth } = state
+    const { auth, chat } = state
+    return {
+        auth,
+        chat: chat.chat
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
 
     return {
-        auth
+        onGetChatInfo: (id) => {
+            dispatch(getChat(id))
+        }
     }
 
 }
 
-export default connect (mapStateToProps, null) (ChatPage)
+export default connect (mapStateToProps, mapDispatchToProps) (ChatPage)

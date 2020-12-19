@@ -1,23 +1,26 @@
 const express = require('express');
-
 const router = express.Router();
-
-module.exports = function(io) {
-
-
-    router.post('/:id', (req, res) => {
+const pool = require("../db");
 
 
-        console.log("BODY", req.body)
+router.post('/createChat', async (req, res) => {
 
-        console.log("ID", req.params.id)
-        
-    })
+    const { username_freelancer_two  } = req.body
 
-    return router
+    const resp = await pool.query("INSERT INTO chat (username_freelancer_one, username_freelancer_two) VALUES ($1, $2) RETURNING *", [req.user.username_freelancer, username_freelancer_two])
 
+    return res.status(200).json( { chatId: resp.rows[0]  }  )
 
-    
+})
 
+router.get('/chat/:id', async(req, res) => {
 
-}
+    const { id } = req.params
+
+    const resp = await pool.query("SELECT * FROM chat where chat_id = $1", [id])
+
+    return res.status(200).json({ chat: resp.rows[0] })
+
+})
+
+module.exports = router

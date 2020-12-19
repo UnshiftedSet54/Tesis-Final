@@ -49,3 +49,7 @@ export const CLEAN_PROPUESTA_BY_ANUNCIO = 'CLEAN_PROPUESTA_BY_ANUNCIO'
 /* User info cuando (usuario no logeado) */
 export const GET_USER_INFO = 'GET_USER_INFO'
 export const CLEAN_USER_INFO = 'CLEAN_USER_INFO'
+
+/* Chats */
+export const CREATE_CHAT = 'CREATE_CHAT'
+export const GET_CHAT_BY_ID = 'GET_CHAT_BY_ID'

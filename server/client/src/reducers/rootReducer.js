@@ -8,6 +8,7 @@ import anuncios from './anunciosReducer'
 import useranuncios from './anunciosUser'
 import propuestaReducer from './propuestaReducer'
 import userInfoReducer from './userInfoReducer'
+import chatReducer from './chatsReducer'
 
 export default combineReducers({
     error: errorReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
     anuncios: anuncios,
     useranuncios: useranuncios,
     propuesta: propuestaReducer,
-    userInfo: userInfoReducer
+    userInfo: userInfoReducer,
+    chat: chatReducer
 })
