@@ -44,7 +44,7 @@ function App() {
         <Route path = "/registro/profesional" component = {RegisterProfesional} />
         <Route path = "/registro/empresa" component = {RegistroBusiness} />
 
-        <Route path = '/chat/:id' component = {ChatPage} />
+        <Route path = '/chat/:id?' component = {ChatPage} />
 
         <PrivateRouteRegister path = "/registro/postregister" component={PostRegister} />
         <PrivateRouteRegister  path = "/registro/rubro" component={Rubro}  />

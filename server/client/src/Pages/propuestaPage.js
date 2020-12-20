@@ -81,7 +81,13 @@ const PropuestaPage = ({
   const cleanUserInfo = () => {
     setShow(false)
     onCleanUserInfo()
-    onChangeNotification()
+    
+    const check = propuestas.find(v => v.user_prop ===  userInfo.username_freelancer).isread
+    
+    if(!check) {
+      onChangeNotification()
+    }
+
     onGetByAnuncio(id);
   }
 

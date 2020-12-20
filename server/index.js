@@ -55,15 +55,12 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', async (message) => {
 
-        console.log("MESSAGE", message)
 
-        console.log("SOCKET ROOM", socket.room)
+       const resp = await pool.query("INSERT INTO mensajes (chat_id, username_freelancer, texto) VALUES ($1, $2, $3) RETURNING *", [socket.room, message.username, message.texto])
 
-       await pool.query("INSERT INTO mensajes (chat_id, username_freelancer_one, username_freelancer_two, texto) VALUES ($1, $2, $3, $4)", [socket.room, message.username, message.toUser, message.texto])
+        // socket.broadcast.to(socket.room).emit('message', { user: message.username, text: message.texto })
 
-        socket.broadcast.to(socket.room).emit('message', { user: message.username, text: message.texto })
-
-        // io.to('123456').emit('message', )
+        io.to(socket.room).emit('message',  { mensaje_id: resp.rows[0].mensaje_id, chat_id: resp.rows[0].chat_id, username_freelancer: message.username, texto: message.texto } )
 
     })
 

@@ -1,0 +1,26 @@
+.chat-container {
+    overflow-y: auto;
+}
+
+.chat-container::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.chat-container::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.chat-containerrame::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+
+.chat-container::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.input-mensaje:focus {
+  border-color: green;
+}

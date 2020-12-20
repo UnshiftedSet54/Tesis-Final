@@ -1,7 +1,9 @@
-import { CREATE_CHAT, GET_CHAT_BY_ID } from '../actions/types'
+import { CREATE_CHAT, GET_CHAT_BY_ID, GET_MESSAGES, SEND_MESSAGE, GET_CHATS_BY_USER } from '../actions/types'
 
 const initialState = {
-    chatId: null
+    chatId: null,
+    messages: null,
+    chatsUser: null,
 };
   
 export default function (state = initialState, action) {
@@ -15,7 +17,24 @@ export default function (state = initialState, action) {
         }
         case GET_CHAT_BY_ID: 
             return {
-                chat: action.payload
+                ...state,
+                chatInfo: action.payload.chat,
+                messages: action.payload.messages
+            }
+        case GET_MESSAGES:
+            return {
+                ...state,
+                messages: action.payload
+            }
+        case SEND_MESSAGE:
+            return {
+                ...state,
+                messages: [...state.messages, action.payload]
+            }
+        case GET_CHATS_BY_USER:
+            return {
+                ...state,
+                chatsUser: action.payload
             }
         default: 
             return state

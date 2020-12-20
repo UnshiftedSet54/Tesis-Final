@@ -53,3 +53,6 @@ export const CLEAN_USER_INFO = 'CLEAN_USER_INFO'
 /* Chats */
 export const CREATE_CHAT = 'CREATE_CHAT'
 export const GET_CHAT_BY_ID = 'GET_CHAT_BY_ID'
+export const GET_MESSAGES = 'GET_MESSAGES'
+export const SEND_MESSAGE = 'SEND_MESSAGE'
+export const GET_CHATS_BY_USER = 'GET_CHATS_BY_USER'
