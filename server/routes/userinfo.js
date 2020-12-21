@@ -28,5 +28,52 @@ router.get('/userinfo/:id', async (req, res) => {
 
 })
 
+router.get('/getuserinfologged', async (req, res) => {
+
+    console.log("REQ USER", req.user)
+
+    if (req.user.isbussines) {
+
+
+
+    } else {
+
+        const resp = await pool.query("select * from freelancerusuario inner join free_area on freelancerusuario.username_freelancer = free_area.username_freelancer inner join area on area.area_id = free_area.area_id where freelancerusuario.username_freelancer = $1", [req.user.username_freelancer])
+
+        const propuestas = await pool.query("select * from propuesta where user_prop = $1", [req.user.username_freelancer])
+
+        const propuestasReadNumber = propuestas.rows.filter(v =>  v.isread === true ).length
+
+   let result = 
+    {
+        username_freelancer: resp.rows[0].username_freelancer,
+        username_nombre: resp.rows[0].nombre_completo,
+        estado: resp.rows[0].estado,
+        pdf_url: resp.rows[0].pdf_url,
+        rubro_id: resp.rows[0].rubro_id,
+        area_info: resp.rows.map(v => {
+            return {
+                nombre_area: v.nombre,
+                experiencia: v.experiencia
+            }
+        })
+    }
+
+    return res.status(200).json({ result, propuestasNumber: propuestas.rows.length, propuestasReadNumber: propuestasReadNumber  })
+
+    }
+})
+
+router.put('/getuserinfologged', (req, res) => {
+
+    const { newUrl } = req.body
+
+    console.log("NEW URL", req.body)
+
+    pool.query("UPDATE freelancerusuario set pdf_url = $1 where username_freelancer = $2 RETURNING *", [newUrl, req.user.username_freelancer])
+
+
+})
+
 
 module.exports = router

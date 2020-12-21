@@ -15,7 +15,7 @@ import { Button, Form, Container, Col, Row, ListGroup } from "react-bootstrap";
 
 import axios from "axios";
 
-import { getChat, pushMessage, getChatsByUser } from "../actions/chatActions";
+import { getChat, pushMessage, getChatsByUser, pushLastMessage } from "../actions/chatActions";
 
 import "../styles/PageStyles/chatPage.css";
 
@@ -37,27 +37,16 @@ const ChatPage = (props) => {
   const [otherUser, setOtherUser] = useState("");
 
   const scrollAbajo = () => {
-    if (scroll !== null) {
+    if (scroll.current !== null) {
       scroll.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   useEffect(() => {
+
+    props.onGetChatsByUser(props.auth.user.username_freelancer)
+
     if (props.match.params.id !== undefined) {
-      console.log("IDDD", props.match.params.id);
-
-      props.onGetChatsByUser(props.auth.user.username_freelancer)
-
-      props.onGetChatInfo(props.match.params.id);
-      
-
-
-      socket = io("");
-
-      console.log("SOCKET", socket);
-      console.log("ID", props.match.params.id);
-      /* El back va a estar escuchando esto */
-      socket.emit("join", { room: props.match.params.id });
 
       return () => {
         socket.emit("disconnect");
@@ -65,6 +54,25 @@ const ChatPage = (props) => {
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (props.match.params.id !== undefined) {
+      props.onGetChatInfo(props.match.params.id);
+      
+       socket = io("");
+
+      /* El back va a estar escuchando esto */
+      socket.emit("join", { room: props.match.params.id });
+
+      socket.on("message", (message) => {
+        // props.onGetChatInfo(props.match.params.id);
+        props.onSendMessage(message);
+        props.onPushLastMessage(props.match.params.id)
+        setValor("");
+        scrollAbajo();
+      });
+    }
+  }, [props.match.params.id])
 
   useEffect(() => {
     if (props.chat.chatInfo !== undefined) {
@@ -76,19 +84,16 @@ const ChatPage = (props) => {
       );
       setTimeout(() => {
         scrollAbajo();
-      }, 1500);
+      }, 500);
     }
   }, [props.chat.chatInfo]);
 
-  useEffect(() => {
-    if (socket !== undefined) {
-      socket.on("message", (message) => {
-        props.onSendMessage(message);
-        setValor("");
-        scrollAbajo();
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log("SOCKET", socket)
+  //   if (socket !== undefined) {
+      
+  //   }
+  // }, []);
 
   const enviarMensaje = (e) => {
     e.preventDefault();
@@ -143,8 +148,9 @@ const ChatPage = (props) => {
         return props.chat.chatsUser.map(valor => {
             return (
                 <ListGroup>
-                   <ListGroup.Item>
+                   <ListGroup.Item onClick = { () => props.history.push(`/chat/${valor.chat_id}`) }>
                        <h4>{ valor.username_freelancer_one !== props.auth.user.username_freelancer ? valor.username_freelancer_one : valor.username_freelancer_two  }</h4>
+                       <label> { valor.lastMessage.username_freelancer === props.auth.user.username_freelancer ? "Tu" : valor.lastMessage.username_freelancer } : { valor.lastMessage.texto  }</label>
                    </ListGroup.Item>
                 </ListGroup>
             )
@@ -166,7 +172,11 @@ const ChatPage = (props) => {
       <Row style={{ height: "100%" }}>
         <Col
           lg={4}
-          style={{ backgroundColor: "green", height: "100%", paddingRight: 0 }}
+          style={{ height: "100%", paddingRight: 0, 
+          borderRightColor: "black",
+          borderRightWidth: "2px",
+          borderRightStyle: "solid" 
+        }}
         >
           <div
             style={{
@@ -176,9 +186,6 @@ const ChatPage = (props) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              borderRightColor: "black",
-              borderRightWidth: "2px",
-              borderRightStyle: "solid",
             }}
           >
             {/* Este es el header */}
@@ -225,7 +232,7 @@ const ChatPage = (props) => {
               </div>
 
               <div
-                style={{ maxHeight: "75%" }}
+                style={{ height: "75%" }}
                 className="chat-container"
                 id="chat-cont"
               >
@@ -233,7 +240,7 @@ const ChatPage = (props) => {
                 <div ref={scroll} />
               </div>
 
-              <div
+              <div  
                 style={{
                   height: "15%",
                   display: "flex",
@@ -241,7 +248,7 @@ const ChatPage = (props) => {
                   alignItems: "center",
                   backgroundColor: "#f0f0f0",
                   justifyContent: "space-around",
-                  marginTop: '53%'
+                  
                 }}
               >
                 <div style={{ width: "90%" }}>
@@ -290,6 +297,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onGetChatsByUser : (id) => {
         dispatch(getChatsByUser(id))
+    },
+    onPushLastMessage: (chat_id) => {
+      dispatch(pushLastMessage(chat_id))
     }
   };
 };

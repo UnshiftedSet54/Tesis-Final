@@ -131,7 +131,7 @@ const Navigation = ({ type, auth, onLogOut, anuncios }) => {
               <Nav.Item style={{ marginRight: "50px" }}>
                 <Button variant="success">
                   {" "}
-                  <Link to="/login" style={{ color: "white" }}>
+                  <Link to="/chat" style={{ color: "white" }}>
                     Conversaciones
                   </Link>
                 </Button>

@@ -48,7 +48,7 @@ router.get('/chatuser/:id', async (req, res) => {
     
     
         } else {   
-        resp = await pool.query('SELECT * FROM chat where username_freelancer_two = $1', [id])
+        resp = await pool.query('SELECT * FROM chat inner join mensajes on chat.chat_id = mensajes.chat_id where username_freelancer_two = $1', [id])
         }
 
         
@@ -76,6 +76,8 @@ router.get('/chatuser/:id', async (req, res) => {
             }).reverse()[0]
         }
     })
+
+    console.log("MENSAJE INFO", mensajeInfo)
     
     return res.status(200).json({ mensajeInfo })
 

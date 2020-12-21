@@ -115,6 +115,8 @@ const Publicaciones = (props) => {
   };
 
   useEffect(() => {
+    
+    console.log("PUBLICACIONES")
     props.onHandleGetUserPost();
 
     if (props.rubros.rubros.length == 0) {

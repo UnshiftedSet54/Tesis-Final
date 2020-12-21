@@ -56,3 +56,7 @@ export const GET_CHAT_BY_ID = 'GET_CHAT_BY_ID'
 export const GET_MESSAGES = 'GET_MESSAGES'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const GET_CHATS_BY_USER = 'GET_CHATS_BY_USER'
+export const PUSH_LAST_MESSAGE = 'PUSH_LAST_MESSAGE'
+
+/* User info del usuario logeado */
+export const GET_USERINFO_LOGGED = 'GET_USERINFO_LOGGED'

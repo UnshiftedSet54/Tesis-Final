@@ -55,6 +55,8 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', async (message) => {
 
+        console.log("SOCKET JOIN", message)
+        console.log("ROOM", socket.room)
 
        const resp = await pool.query("INSERT INTO mensajes (chat_id, username_freelancer, texto) VALUES ($1, $2, $3) RETURNING *", [socket.room, message.username, message.texto])
 
