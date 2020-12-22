@@ -95,8 +95,7 @@ const ChatPage = (props) => {
   //   }
   // }, []);
 
-  const enviarMensaje = (e) => {
-    e.preventDefault();
+  const enviarMensaje = () => {
     socket.emit("sendMessage", {
       texto: valor,
       room: props.match.params.id,
@@ -104,6 +103,12 @@ const ChatPage = (props) => {
       toUser: otherUser,
     });
   };
+
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+      enviarMensaje()
+    }
+  }
 
   const renderMessages = () => {
     if (props.chat.messages !== null) {
@@ -256,6 +261,7 @@ const ChatPage = (props) => {
                     className="input-mensaje"
                     style={{ borderRadius: "15px" }}
                     value={valor}
+                    onKeyDown = {(e) => handleEnter(e)}
                     placeholder="Escribir mensaje"
                     onChange={(e) => setValor(e.target.value)}
                   />

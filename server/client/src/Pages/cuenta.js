@@ -5,9 +5,11 @@ import {  connect } from 'react-redux'
 
 import { getUserInfoLogged, updateUrl  } from "../actions/userInfoActions"
 
-import { Container, Col, Row, Button, Form, Dropdown } from "react-bootstrap";
+import { Container, Col, Row, Button, Form, Dropdown, Card } from "react-bootstrap";
 
 import { storage } from "../firebase/index"
+
+import { Bar, Doughnut } from 'react-chartjs-2';
 
 
 const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
@@ -15,6 +17,8 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
   const [isEditMode, setIsEditMode] = useState(false)
 
   const [pdf, setPdf] = useState('')
+
+  const [colors, setColors] = useState(['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', '#B3A2A2', "#DB913D", "#DBD83D", "#6DDE39", "#7639DE", "#DE39AA", "#DE3952"])
 
   const [states, setStates] = useState([
     "Amazonas",
@@ -43,14 +47,104 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
     ]);
 
     const [selectedState, setSelectedState] = useState('')
+
+    const [data, setData] = useState({
+      labels: ['Propuestas enviadas', 'Propuestas leidas'],
+        datasets:[
+          {
+            label: ['Estadisticas de propuestas'],
+            data:[
+              0
+            ],
+            backgroundColor:[
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+            ]
+          }
+        ]
+    })
+
+    const [dataDognut, setDataDognut] = useState({
+      labels: [],
+        datasets:[
+          {
+            label:'Estadisticas de propuestas',
+            data:[
+              5,
+              1,
+              0
+            ],
+            backgroundColor:[
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+            ]
+          }
+        ]
+    })
+
+    const getColorsNotRepeated = (array) => {
+
+      let arreglo = array.map( _ =>  colors[Math.floor(Math.random() * 2) + 0 ] )
+
+     let checkTwo = arreglo.some(valor => {
+
+      console.log("VALOR LAST", arreglo.lastIndexOf(valor))
+      console.log("VALOR INDEX", arreglo.indexOf(valor))
+      console.log("VALOR", valor)
+      console.log("ARRELGO", arreglo)
+
+
+        return (arreglo.lastIndexOf(valor) - arreglo.indexOf(valor)) === 1 
+
+      })
+
+      if (!checkTwo) {
+        return arreglo
+      } else {
+        getColorsNotRepeated(userInfo.userLoggedInfo.finalData)
+      }
+
+    }
   
   useEffect(() => {
 
     if (auth.user !== undefined) {
       onGetInfoUserLogged()
-      setSelectedState(userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.estado : null)
     }
+   
   }, []  )
+
+  useEffect(() => {
+
+    if (userInfo.userLoggedInfo !== null) {
+
+      setSelectedState(userInfo.userLoggedInfo.result.estado)
+    
+
+      setData(oldData => ({
+        ...oldData,
+        datasets: [{
+          label: oldData.datasets[0].label,
+          data: [userInfo.userLoggedInfo.propuestasNumber, userInfo.userLoggedInfo.propuestasReadNumber, ...oldData.datasets[0].data, Math.floor(userInfo.userLoggedInfo.propuestasNumber * 1.5 )],
+          backgroundColor: oldData.datasets[0].backgroundColor
+        }]
+      }))
+
+      setDataDognut({
+        labels: [...userInfo.userLoggedInfo.finalData.map(value => value.nombre)],
+        datasets:[
+          {
+            label:'Areas pertenecientes a publicaciones',
+            data:[...userInfo.userLoggedInfo.finalData.map(value => value.veces)],
+            backgroundColor: userInfo.userLoggedInfo.finalData.map((_, i) => colors[i] )
+          }
+        ]
+      })
+
+    }
+
+
+  }, [userInfo.userLoggedInfo])
 
   const uploadFile = (file) => {
 
@@ -91,41 +185,64 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
     if(isEditMode) {
       return (
         <div>
-          <input type = "file" onChange = { (e) => uploadFile(e.target.files)  } /> 
-          <Button onClick = { () => setIsEditMode(false) } >Quitar modo editable</Button>
+          <input id = "files" type = "file" onChange = { (e) => uploadFile(e.target.files)  } /> 
+          <Button variant="danger" onClick = { () => setIsEditMode(false) } >Quitar modo editable</Button>
           {  pdf === "" ? null : <Button onClick = { () => guardarPdf() } >Guardar</Button>   }
         </div>
       )
     } else {
       return(
         <div>
-          <a href = { userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.pdf_url : null  } target="_blank" ><Button>Ver PDF</Button></a>
-          <Button onClick = { () => setIsEditMode(true) } >Editar</Button>
+          <a href = { userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.pdf_url : null  } target="_blank" ><Button variant="success">Ver PDF</Button></a>
+          <Button variant="warning" onClick = { () => setIsEditMode(true) } >Editar</Button>
         </div>
         )
     }
 
   }
 
+  const renderGraph = () => {
+
+
+
+  }
+
   return (
     <div>
       <Row style = {{ marginRight: '0px', marginLeft: '0px' }}>
-        <Col lg = {7} style = {{ padding: '0' }}>
+        <Col lg = {7}>
           <h1 style = {{ textAlign: 'center' }}>Informacion de cuenta</h1>
 
-          <Form.Label>Usuario</Form.Label>
-          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_freelancer : null } />
+          <div style = { { marginTop: '10%' } }>
 
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_nombre : null } />
+          <div style = {{ display: 'flex'  }}>
 
-          <Dropdown drop="up" style={{ marginBottom: "10px", width: "100%" }}>
+          <div style = {{ flexGrow: '1' }}>
+          <Form.Label style = {{ textAlign: 'center', display: 'block' }}>Usuario</Form.Label>
+          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_freelancer : null } disabled={true} />
+          </div>
+
+          <div style = {{ flexGrow: '0.5' }}></div>
+
+          <div style = {{ flexGrow:'1' }}>
+          <Form.Label style = {{  textAlign: 'center', display: 'block' }}>Nombre</Form.Label>
+          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_nombre : null } disabled ={true} />
+          </div>
+
+          </div>
+
+          <div style = {{ display: 'flex' }}>
+
+            <div style = {{ flexGrow: '1' }}>
+
+          <Dropdown drop="up" style={{ marginBottom: "10px", width: "100%", marginTop: '30px' }}>
               <Dropdown.Toggle
                 style={{ width: "100%" }}
                 variant="success"
                 id="dropdown-basic"
+                disabled={true}
               >
-                { selectedState }
+                { userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.estado : null }
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ width: "100%"}} className = "dropdown-register">
@@ -137,12 +254,66 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
+            </div>
+
+            <div style = {{ flexGrow: '0.5' }}>
+
+            </div>
+
+          <div style = {{ flexGrow: '1' }}>
+            
+          <Dropdown drop="up" style={{ marginBottom: "10px", width: "100%", marginTop: '30px' }}>
+              <Dropdown.Toggle
+                style={{ width: "100%" }}
+                variant="success"
+                id="dropdown-basic"
+                disabled={true}
+              >
+                { userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.rubro : null }
+              </Dropdown.Toggle>
+
+            </Dropdown>
+
+          </div>
+
+          </div>
+
+          <div>
+
+            <Row>
+              { userInfo.userLoggedInfo !== null ?  userInfo.userLoggedInfo.result.area_info.map(valor => {
+
+                return (
+                  <Col lg = {6}>
+                    <Card>
+                        <Card.Body>
+                          <label style = { { display: 'block' } }>Area: {valor.nombre_area}</label>
+                          <label>Experiencia: {valor.experiencia} sjhasdjhsadjhasjdvjh</label>
+                        </Card.Body>
+                    </Card>
+                  </Col>
+                )
+
+              })  : null  }
+            </Row>
+
+
+          </div>
 
           { renderItems() }
+          </div>
+
+
+
 
         </Col>
         <Col lg = {5} style = {{ padding: '0' }}>
           <h1 style = {{ textAlign: 'center' }}>Estadisticas</h1>
+          
+          <Bar data={data} height={200}  />
+
+          <Doughnut data = {dataDognut}  />
+
         </Col>
       </Row>
     </div>
