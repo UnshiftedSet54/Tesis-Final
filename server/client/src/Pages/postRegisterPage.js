@@ -17,7 +17,6 @@ const PostRegister = (props) => {
 
   return (
     <div style={{ height: "100vh" }}>
-      { console.log("PROPS", props) }
       <div className="content-container">
         <Card className = "card-style-post">
           <Card.Body>
@@ -66,7 +65,6 @@ const PostRegister = (props) => {
 
 const mapStateToProps = (state) => {
 
-  console.log("STATE", state)
 
   const {  auth  } = state
 

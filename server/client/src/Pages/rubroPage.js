@@ -111,7 +111,6 @@ const Rubro = (props) => {
 
     if(send) {
 
-      console.log("INFO USER", infoUser)
       props.onSendAreas(infoUser, props.auth, props.history)
       
     }

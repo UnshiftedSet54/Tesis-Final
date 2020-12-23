@@ -195,7 +195,7 @@ const ChatPage = (props) => {
           >
             {/* Este es el header */}
             <FontAwesomeIcon
-              onClick={() => props.history.push("/mispublicaciones")}
+              onClick={() => props.auth.user.isbussines ?  props.history.push("/mispublicaciones") : props.history.push("/usuariopropuestas") }
               icon={faArrowLeft}
               style={{ marginLeft: "10%", fontSize: "30px" }}
             />

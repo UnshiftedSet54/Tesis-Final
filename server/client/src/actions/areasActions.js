@@ -25,7 +25,7 @@ export const sendAreas = (data, user, history) => async (dispatch) => {
   dispatch({ type : SEND_AREAS, payload: resp.data })
 
 
-  history.push('/dashboard')
+  history.push('/home?b0=0&')
 }
 
 export const getAreaById = (id) => {

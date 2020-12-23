@@ -10,13 +10,12 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   USER_LOADED,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
 } from "../actions/types";
 
 import { returnErrors } from "./errorActions";
 
-import { storage } from "../firebase/index"
-
+import { storage } from "../firebase/index";
 
 /*** Funcion que realizara el login en comunicacion con el reducer */
 export const login = (username, password, history) => async (dispatch) => {
@@ -45,7 +44,7 @@ export const login = (username, password, history) => async (dispatch) => {
       })
     );
 
-    history.push("/home");
+    history.push("/home?b0=0&");
   } catch (err) {
     if (err.response.data.message === "Usuario no existente") {
       dispatch(returnErrors(err.response.data, err.response.status, NOT_USER));
@@ -60,112 +59,119 @@ export const login = (username, password, history) => async (dispatch) => {
 };
 
 export const register = (user, history) => async (dispatch) => {
- 
-  try {
-    dispatch({ type: USER_LOADING });
+  dispatch({ type: USER_LOADING });
 
-    if (user.isBussines) {
-      let body = JSON.stringify(user);
+  if (user.isBussines) {
+    let body = JSON.stringify(user);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      let res = await axios.post("/registro", body, config);
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...res.data.user,
+        })
+      );
+
+      dispatch({ type: USER_LOADED });
+
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data,
+      });
+
+      if (user.isBussines) {
+        history.push("/home?b0=0&");
+      } else {
+        history.push("/registro/postregister");
+      }
+    } catch (err) {
+      if (err.response.data.message === "Usuario ya existente") {
+        dispatch(
+          returnErrors(err.response.data, err.response.status, REGISTER_FAIL)
+        );
+        dispatch({ type: AUTH_ERROR });
+      }
+    }
+  } else {
+    const uploadTask = storage
+      .ref(`pdf/${user.username}${user.pdf_url.name}`)
+      .put(user.pdf_url);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref("pdf")
+          .child(user.username + user.pdf_url.name)
+          .getDownloadURL()
+          .then(async (url) => {
+            let body = {
+              ...user,
+              pdf_url: url,
+            };
+
+            body = JSON.stringify(body);
             const config = {
               headers: {
                 "Content-Type": "application/json",
               },
             };
 
-            let res = await axios.post("/registro", body, config);
-
-            localStorage.setItem(
-              "user",
-              JSON.stringify({
-                ...res.data.user,
-              })
-            );
-
-            dispatch({ type: USER_LOADED });
-
-            dispatch({
-              type: REGISTER_SUCCESS,
-              payload: res.data,
-            });
-
-            if (user.isBussines) {
-              history.push('/home')
-            } else {
-              history.push("/registro/postregister");
-            }
-    } else {
-
-      const uploadTask = storage.ref(`pdf/${user.username}${user.pdf_url.name}`).put(user.pdf_url);
-  
-        uploadTask.on(
-        "state_changed",
-        snapshot => {},
-        error => {
-          console.log(error)
-        },
-        () => {
-          storage
-            .ref("pdf")
-            .child(user.username+user.pdf_url.name)
-            .getDownloadURL()
-            .then( async url => {
-             let body = {
-                ...user,
-                pdf_url: url
-              }
-  
-              body = JSON.stringify(body);
-              const config = {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              };
-  
+            try {
               let res = await axios.post("/registro", body, config);
-  
+
               localStorage.setItem(
                 "user",
                 JSON.stringify({
                   ...res.data.user,
                 })
               );
-  
+
               dispatch({ type: USER_LOADED });
-  
+
               dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data,
               });
-  
+
               if (user.isBussines) {
-                history.push('/home')
+                history.push("/home");
               } else {
                 history.push("/registro/postregister");
               }
-  
-            })
-        }
-      )
-    }
-
-
-  } catch (err) {
-    if (err.response.data.message === "Usuario ya existente") {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, REGISTER_FAIL)
-      );
-      dispatch({ type: AUTH_ERROR });
-    }
+            } catch (err) {
+              if (err.response.data.message === "Usuario ya existente") {
+                dispatch(
+                  returnErrors(
+                    err.response.data,
+                    err.response.status,
+                    REGISTER_FAIL
+                  )
+                );
+                dispatch({ type: AUTH_ERROR });
+              }
+            }
+          });
+      }
+    );
   }
 };
 
 export const logOut = (history) => async (dispatch) => {
+  let resp = await axios.get("/logout");
 
-  let resp = await axios.get('/logout')
+  dispatch({ type: LOGOUT_SUCCESS });
 
-  dispatch({ type: LOGOUT_SUCCESS })
-
-  localStorage.removeItem('user')
-
-
-}
+  localStorage.removeItem("user");
+};

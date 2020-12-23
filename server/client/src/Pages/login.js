@@ -48,7 +48,7 @@ const Login = ({ onLogin, history, auth, error, clearErrors }) => {
   /* Antes de que renderice en el dom */
   useLayoutEffect(() => {
     if (auth.isAuthenticated) {
-      history.push("/home");
+      history.push("/home?b0=0&");
     }
   }, []);
 

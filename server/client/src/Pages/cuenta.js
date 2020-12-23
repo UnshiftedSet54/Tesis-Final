@@ -1,5 +1,5 @@
 /* React importaciones */
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 
 import {  connect } from 'react-redux'
 
@@ -13,6 +13,8 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 
 
 const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
+
+  const inputRef = useRef(null)
 
   const [isEditMode, setIsEditMode] = useState(false)
 
@@ -87,12 +89,6 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
       let arreglo = array.map( _ =>  colors[Math.floor(Math.random() * 2) + 0 ] )
 
      let checkTwo = arreglo.some(valor => {
-
-      console.log("VALOR LAST", arreglo.lastIndexOf(valor))
-      console.log("VALOR INDEX", arreglo.indexOf(valor))
-      console.log("VALOR", valor)
-      console.log("ARRELGO", arreglo)
-
 
         return (arreglo.lastIndexOf(valor) - arreglo.indexOf(valor)) === 1 
 
@@ -172,7 +168,6 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
             .child(auth.username_freelancer+pdf.name)
             .getDownloadURL()
             .then( async newUrl => {
-              console.log("NEW URL", newUrl)
               onUpdateUrl(newUrl)
             })
         }
@@ -184,17 +179,18 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
 
     if(isEditMode) {
       return (
-        <div>
-          <input id = "files" type = "file" onChange = { (e) => uploadFile(e.target.files)  } /> 
-          <Button variant="danger" onClick = { () => setIsEditMode(false) } >Quitar modo editable</Button>
-          {  pdf === "" ? null : <Button onClick = { () => guardarPdf() } >Guardar</Button>   }
+        <div style = {{ marginTop: '20px' }}>
+          <input ref = {inputRef} id = "files" type = "file" onChange = { (e) => uploadFile(e.target.files)  } style = {{ display: 'none' }} /> 
+          <Button onClick = { () => inputRef.current.click() }>Subir Curriculum</Button>
+          {  pdf === "" ? null : <Button onClick = { () => guardarPdf() } style = {{ marginLeft: '10px' }} >Guardar</Button>   }
+          <Button variant="danger" onClick = { () => {setIsEditMode(false); setPdf("")  } }  style = {{ marginLeft: '10px' }}  >Quitar modo editable</Button>
         </div>
       )
     } else {
       return(
-        <div>
-          <a href = { userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.pdf_url : null  } target="_blank" ><Button variant="success">Ver PDF</Button></a>
-          <Button variant="warning" onClick = { () => setIsEditMode(true) } >Editar</Button>
+        <div style = {{ marginTop: '20px' }}>
+          <a href = { userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.pdf_url : null  } target="_blank" ><Button variant="success">Ver Curriculum</Button></a>
+          <Button variant="warning" onClick = { () => setIsEditMode(true) } style = {{ marginLeft: '10px' }} >Editar</Button>
         </div>
         )
     }
@@ -288,7 +284,7 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
                     <Card>
                         <Card.Body>
                           <label style = { { display: 'block' } }>Area: {valor.nombre_area}</label>
-                          <label>Experiencia: {valor.experiencia} sjhasdjhsadjhasjdvjh</label>
+                          <label>Experiencia: {valor.experiencia} </label>
                         </Card.Body>
                     </Card>
                   </Col>

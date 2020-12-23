@@ -1,5 +1,5 @@
 /* React importaciones */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { connect } from "react-redux";
 
@@ -38,6 +38,8 @@ import { ToastContainer, toast } from "react-toastify";
 import Axios from "axios";
 
 const RegisterProfesional = (props) => {
+
+  const inputRef = useRef(null)
 
   useEffect(() => {
 
@@ -134,7 +136,7 @@ const RegisterProfesional = (props) => {
       errorHandler(setConfirmPasswordError, "Contraseñas no coinciden");
     } else if (pdf === "") {
       errorHandler(setPdfError, "Por favor, ingrese un curriculum")
-    } else if (pdf.type == "application/msword") {
+    } else if (pdf.type !== "application/pdf") {
       errorHandler(setPdfError, "Por favor, ingrese un curriculum en pdf")
     } else {
       props.onRegister({ ...userInfo,  pdf_url: pdf  }, props.history)
@@ -329,8 +331,13 @@ const RegisterProfesional = (props) => {
               </Dropdown.Menu>
             </Dropdown>
 
-            <input type = "file" onChange = { (e) =>  uplodadFile(e.target.files) } style = {{ marginBottom: '10px' }} />
+            <div style = {{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+            <input type = "file" ref = {inputRef} onChange = { (e) =>  uplodadFile(e.target.files) } style = {{ marginBottom: '10px', display: 'none' }} />
 
+            <Button onClick = {() => inputRef.current.click()} variant="success">Subir curriculum</Button>
+
+            </div>
+              
             <Transition
               items={pdfError !== null}
               from={{ opacity: 0 }}
