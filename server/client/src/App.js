@@ -3,8 +3,7 @@ import './App.css';
 
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 
-/* CSS */
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 /* HOC */
 import PrivateRoute from './Hoc/PrivateRouter'
