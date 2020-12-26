@@ -13,8 +13,6 @@ import { io } from "socket.io-client";
 
 import { Button, Form, Container, Col, Row, ListGroup } from "react-bootstrap";
 
-import axios from "axios";
-
 import { getChat, pushMessage, getChatsByUser, pushLastMessage } from "../actions/chatActions";
 
 import "../styles/PageStyles/chatPage.css";
