@@ -18,6 +18,8 @@ const cookieParser = require('cookie-parser')
 
 const initializePassport = require('./passport.Config')
 
+const path = require('path')
+
 
 //Middlewares
 app.use(express.json())

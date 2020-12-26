@@ -7,10 +7,14 @@ router.get('/userinfo/:id', async (req, res) => {
 
     const { id } = req.params
 
+    console.log("ID", id)
+
     try {
 
         const resp = await pool.query("select * from freelancerusuario inner join free_area on freelancerusuario.username_freelancer = free_area.username_freelancer inner join area on area.area_id = free_area.area_id where freelancerusuario.username_freelancer = $1", [id])
-     
+
+        console.log("RESP", resp.rows)
+
         let result = 
          {
              username_freelancer: resp.rows[0].username_freelancer,

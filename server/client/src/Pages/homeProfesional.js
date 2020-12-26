@@ -117,6 +117,8 @@ const HomeProfesional = ({
 
     if(anuncios.anuncios !== null) {
 
+      console.log(anuncios.anuncios, "ANUNCIOS ANUNCIOS")
+
       let anunciosFilter = anuncios.anuncios.filter(v => v.username_freelancer !== auth.user.username_freelancer  )
 
       setAnunciosUsers(anunciosFilter)
