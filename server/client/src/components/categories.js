@@ -8,18 +8,15 @@ import { Card } from "react-bootstrap";
 import "../styles/ComponentsStyles/Categories.css";
 
 const Categories = ({ content }) => {
-  const cardSelected = () => {
-    console.log("Contendio del card", content);
-  };
 
   return (
     <div>
-      <Card className="card-style" onClick={() => cardSelected(content)}>
+      <Card className="card-style" style = {{ height: '300px' }}>
         <Card.Img variant="top" src = {content.src} className = "image" />
         <Card.Body>
           <Card.Title style = {{ textAlign : 'center' }}>{content.titulo}</Card.Title>
-          <Card.Text>
-            asnjksdnsjkddjkbjkasbdjkbasdbasjkdbasdbjkabjdbvfyuv
+          <Card.Text style = {{ textAlign: 'center' }}>
+            { content.contenido  }
           </Card.Text>
         </Card.Body>
       </Card>

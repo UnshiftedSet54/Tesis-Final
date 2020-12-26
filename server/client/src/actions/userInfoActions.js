@@ -26,7 +26,6 @@ export const getUserInfoLogged = () => async (dispatch) => {
 
     const resp = await axios.get(`/getuserinfologged`)
 
-    console.log("RESP DATA", resp.data)
 
     dispatch({
         type: GET_USERINFO_LOGGED,

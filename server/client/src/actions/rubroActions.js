@@ -8,6 +8,5 @@ export const getRubros = () => async dispatch => {
 
         dispatch({type: GET_RUBROS, payload: resp.data.rubros })
 
-        console.log("RESP AXIOS RUBROS", resp)
 }
 

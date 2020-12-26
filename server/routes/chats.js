@@ -35,20 +35,20 @@ router.get('/messages/:id', async (req, res) => {
 
 })
 
-router.get('/chatuser/:id', async (req, res) => {
-   
-    const { id } = req.params
-    
+router.get('/chatuser', async (req, res) => {
+
+    console.log("ETNRA")
+       
     let resp
     
     try{
         if (req.user.isbussines) {
         
-        resp = await pool.query("select * from chat inner join mensajes on chat.chat_id = mensajes.chat_id where username_freelancer_one = $1", [id])
+        resp = await pool.query("select * from chat inner join mensajes on chat.chat_id = mensajes.chat_id where username_freelancer_one = $1", [req.user.username_freelancer])
     
     
         } else {   
-        resp = await pool.query('SELECT * FROM chat inner join mensajes on chat.chat_id = mensajes.chat_id where username_freelancer_two = $1', [id])
+        resp = await pool.query('SELECT * FROM chat inner join mensajes on chat.chat_id = mensajes.chat_id where username_freelancer_two = $1', [req.user.username_freelancer])
         }
 
         

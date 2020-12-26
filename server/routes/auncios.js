@@ -131,7 +131,10 @@ router.get('/personalposts', async (req, res) => {
 
 router.delete('/personalposts/:id', async (req, res) => {
 
-    /* Eliminacion cascada lista */
+    await pool.query('DELETE FROM propuesta where anuncio_id = $1', [req.params.id])
+
+    await pool.query("DELETE FROM anuncios_area where anuncio_id = $1", [req.params.id])
+
     await pool.query("DELETE FROM anuncios where anuncio_id = $1", [req.params.id] )
 
     return res.status(200).json({ message : 'Anuncio eliminado satisfactoriamente' })

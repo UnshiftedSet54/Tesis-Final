@@ -22,7 +22,7 @@ export const cleanPropuesta = () =>  {
 
 export const getPropuestas = (id) => async (dispatch) => {
     
-    let data = await axios.get(`/propuesta/${id}`)
+    let data = await axios.get(`/propuesta`)
 
     dispatch({
         type: GET_PROPUESTAS,

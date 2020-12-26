@@ -114,15 +114,6 @@ const Navigation = ({ type, auth, onLogOut, anuncios }) => {
               </Nav.Item>
               )  }
 
-              <Nav.Item>
-                <Button variant="success">
-                  {" "}
-                  <Link to="/misproyectos" style={{ color: "white" }}>
-                    Mis Proyectos
-                  </Link>
-                </Button>
-              </Nav.Item>
-
             </Nav>
           </Navbar.Collapse>
 

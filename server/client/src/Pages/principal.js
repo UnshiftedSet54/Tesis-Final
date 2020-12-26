@@ -37,38 +37,46 @@ const Principal = (props) => {
       titulo: "Programador",
       src:
         "https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/styles/480/public/media/image/2020/02/lenguaje-programacion-1859691.jpg?itok=PSYEVgtj",
+      contenido: 'Busca al mejor programador para tu empresa'
     },
     {
       titulo: "Diseño",
       src:
         "https://ideakreativa.net/wp-content/uploads/2020/01/programas-para-dise%C3%B1o-2020-1024x576.jpg",
+      contenido: 'Consigue al diseñador mas creativo'
     },
     {
       titulo: "Esritura",
       src:
         "https://i2.wp.com/www.infotecarios.com/wp-content/uploads/escritura.jpg?fit=770%2C410&ssl=1",
+      contenido: 'Escritura, redaccion y mas'
     },
     {
       titulo: "Marketing",
       src:
         "https://www.estrategiaynegocios.net/csp/mediapool/sites/dt.common.streams.StreamServer.cls?STREAMOID=EJiZA3cUe78rpkwgKbdvRc$daE2N3K4ZzOUsqbU5sYt8QgJDrP6_oWgzQvrTXjLC6FB40xiOfUoExWL3M40tfzssyZqpeG_J0TFo7ZhRaDiHC9oxmioMlYVJD0A$3RbIiibgT65kY_CSDiCiUzvHvODrHApbd6ry6YGl5GGOZrs-&CONTENTTYPE=image/jpeg",
+      contenido: 'Nada mejor que una persona responsable manejando las publicidades'
     },
     {
       titulo: "Administracion",
       src:
         "https://www.grouphealth.ca/wp-content/uploads/2019/12/working-on-plan-administration.jpg",
+      contenido: 'Consigue a un experto que sepa administrar tu negocio'
     },
     {
       titulo : "Ingenieria",
-      src: 'https://blogs.ucontinental.edu.pe/wp-content/uploads/2017/05/arquitectura-ingenieria-civil.jpg'
+      src: 'https://blogs.ucontinental.edu.pe/wp-content/uploads/2017/05/arquitectura-ingenieria-civil.jpg',
+      contenido: 'Consigue personal relacionado al ambito de la ingenieria'
     },
     {
       titulo: 'Idiomas',
-      src: 'https://www.ecestaticos.com/image/clipping/39db19382aa7eb27f590d33dba6b1f11/opening.jpg'
+      src: 'https://www.ecestaticos.com/image/clipping/39db19382aa7eb27f590d33dba6b1f11/opening.jpg',
+      contenido: 'Traduccion de texto y mucho mas'
     },
     {
       titulo: 'Leyes',
-      src: 'https://www.caraotadigital.net/wp-content/uploads/2019/06/1487244022_000495_1487244627_noticia_normal.jpg'
+      src: 'https://www.caraotadigital.net/wp-content/uploads/2019/06/1487244022_000495_1487244627_noticia_normal.jpg',
+      contenido: 'Problema legal? Consigue a las personas mas preparadas'
     }
   ]);
 

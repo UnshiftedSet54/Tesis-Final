@@ -43,7 +43,7 @@ export const pushMessage = message => {
 export const getChatsByUser = (id) => async (dispatch) => {
    
      
-    const resp = await axios.get(`/chatuser/${id}`)
+    const resp = await axios.get(`/chatuser`)
 
     console.log("RESP CHAT INFO", resp.data)
 

@@ -108,7 +108,7 @@ router.post("/registro", async (req, res) => {
             .status(200)
             .json({
               message: "Usuario registrado satisfactoriamente",
-              user: newUser.rows[0],
+              user,
             })
           })
         } 

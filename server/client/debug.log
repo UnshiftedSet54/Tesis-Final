@@ -1,0 +1,14 @@
+[1224/115021.788:ERROR:directory_reader_win.cc(43)] FindFirstFile: El sistema no puede encontrar la ruta especificada. (0x3)
+[1225/040620.782:ERROR:process_info.cc(329)] VirtualQueryEx: Acceso denegado. (0x5)
+[1225/040620.782:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1225/040620.782:ERROR:process_memory_win.cc(39)] Failed to initialize ProcessInfo.
+[1225/040620.767:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acceso denegado} Un proceso ha solicitado acceso a un objeto, pero no se le han concedido esos derechos de acceso. (0xc0000022)
+[1225/040620.767:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acceso denegado} Un proceso ha solicitado acceso a un objeto, pero no se le han concedido esos derechos de acceso. (0xc0000022)
+[1225/040620.767:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acceso denegado} Un proceso ha solicitado acceso a un objeto, pero no se le han concedido esos derechos de acceso. (0xc0000022)
+[1225/040620.829:ERROR:exception_snapshot_win.cc(99)] thread ID 16720 not found in process
+[1225/040620.845:ERROR:exception_snapshot_win.cc(99)] thread ID 8628 not found in process
+[1225/040620.782:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Se intentó obtener acceso a un proceso que está cerrándose. (0xc000010a)
+[1225/040620.845:ERROR:exception_snapshot_win.cc(99)] thread ID 712 not found in process
+[1225/040620.845:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Se intentó obtener acceso a un proceso que está cerrándose. (0xc000010a)
+[1225/040620.845:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Se intentó obtener acceso a un proceso que está cerrándose. (0xc000010a)
+[1225/040620.845:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Se intentó obtener acceso a un proceso que está cerrándose. (0xc000010a)

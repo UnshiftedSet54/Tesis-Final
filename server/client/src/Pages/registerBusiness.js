@@ -145,7 +145,7 @@ const RegisterBusiness = (props) => {
   };
 
   const rubros = () => {
-    if (props.rubros.rubros.length > 0) {
+    if (props.rubros.rubros !== null ) {
       return props.rubros.rubros.map((value) => (
        <Dropdown.Item onClick={() => changeRubro(value)}>
          {value.nombre}

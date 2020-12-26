@@ -89,7 +89,7 @@ const HomeProfesional = ({
     onGetPropuestas(auth.user.username_freelancer)
 
     /* Hacer peticion si aun no tenemos los rubros en redux */
-    if (rubros.rubros.length <= 0) {
+    if (rubros.rubros == null) {
       onGetRubros();
     }
 
@@ -97,7 +97,7 @@ const HomeProfesional = ({
   }, []);
 
   useEffect(() => {
-    if (rubros.rubros.length > 0) {
+    if (rubros.rubros !== null) {
       let newValue = rubros.rubros.map((v) => {
         return {
           nombre: v.nombre,
@@ -167,7 +167,7 @@ const HomeProfesional = ({
   const getRubroByAnuncio = (rubroId) => {
     return (
       <div>
-        {rubros.rubros.find(v => v.rubro_id == rubroId).nombre} 
+        { rubros.rubros !== null ? rubros.rubros.find(v => v.rubro_id == rubroId).nombre : null} 
       </div>
     )
   }
@@ -257,7 +257,7 @@ const HomeProfesional = ({
   const renderBoton = (v) => {
 
     if (!auth.user.isbussines) {
-      if (propuesta.propuestasByUser !== undefined) {
+      if (propuesta.propuestasByUser !== null) {
 
         const checkIfSend = propuesta.propuestasByUser.find(valor => valor.anuncio_id === v.anuncio_id )
 
@@ -328,7 +328,7 @@ const HomeProfesional = ({
             >
               {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
               <Card.Body>
-                {rubros.rubros.length > 0
+                {rubros.rubros !== null
                   ? rubrosState.map((v, i) => {
                       return (
                         <div

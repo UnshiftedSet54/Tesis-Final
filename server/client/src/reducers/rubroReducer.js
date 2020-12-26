@@ -1,7 +1,7 @@
 import { GET_RUBROS } from '../actions/types'
 
 const initialState = {
-    rubros: ''
+    rubros: null
 };
   
 
