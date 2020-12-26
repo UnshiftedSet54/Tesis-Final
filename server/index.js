@@ -81,7 +81,9 @@ app.use(require('./routes/propuesta'))
 app.use(require('./routes/userinfo'))
 app.use(require('./routes/chats'))
 
+
 if (process.env.NODE_ENV === 'production') {
+    console.log("ENTRA")
     app.use(express.static('client/build'))
 
     app.get('*', (req, res) => {

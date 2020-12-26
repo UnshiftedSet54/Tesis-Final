@@ -2,7 +2,9 @@ const Pool = require('pg').Pool
 
 let pool
 
-if (process.env.NODE_ENV === 'production') {
+
+if (process.env.NODE_ENV !== 'production') {
+
 
     pool = new Pool({
         user: "postgres",
@@ -13,6 +15,7 @@ if (process.env.NODE_ENV === 'production') {
     })  
 
 } else {
+    console.log("NO")
     pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: {
