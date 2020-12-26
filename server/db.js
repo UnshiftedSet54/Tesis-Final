@@ -5,23 +5,22 @@ let pool
 
 if (process.env.NODE_ENV === 'production') {
 
-
-    pool = new Pool({
-        user: "postgres",
-        password: "12345",
-        host: "localhost",
-        port: 5432,
-        database: "PruebaTesis"
-    })  
-
-} else {
-    console.log("NO")
-    pool = new Pool({
+      pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: {
           rejectUnauthorized: false
         }
       });
+
+} else {
+   
+      pool = new Pool({
+        user: "postgres",
+        password: "12345",
+        host: "localhost",
+        port: 5432,
+        database: "PruebaTesis"
+    }) 
 }
 
 
