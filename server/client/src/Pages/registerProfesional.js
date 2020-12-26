@@ -35,7 +35,6 @@ import "../styles/PageStyles/registerProfesional.css";
 import { Spring, Transition } from "react-spring/renderprops";
 import { register } from "../actions/authAction";
 import { ToastContainer, toast } from "react-toastify";
-import Axios from "axios";
 
 const RegisterProfesional = (props) => {
 
