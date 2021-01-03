@@ -18,9 +18,6 @@ const cookieParser = require('cookie-parser')
 
 const initializePassport = require('./passport.Config')
 
-const path = require('path')
-
-
 //Middlewares
 app.use(express.json())
 app.use(cors())
@@ -68,8 +65,12 @@ io.on('connection', (socket) => {
 
     })
 
-    socket.on('disconnect', () => {
+    socket.on('desconectar', () => {
         console.log("User had left")
+        socket.removeAllListeners('sendMessage');
+        socket.removeAllListeners('join');
+        socket.removeAllListeners('desconectar');
+        io.removeAllListeners('connection');
     })
     
 })
@@ -85,7 +86,8 @@ app.use(require('./routes/chats'))
 
 
 if (process.env.NODE_ENV === 'production') {
-    console.log("ENTRA")
+    const path = require('path')
+
     app.use(express.static('client/build'))
 
     app.get('*', (req, res) => {

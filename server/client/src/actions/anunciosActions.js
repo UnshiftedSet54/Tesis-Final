@@ -8,6 +8,8 @@ export const getAnuncios = (query) => async (dispatch) => {
 
     const resp = await axios.get('/anunciosnegocios'+query)
 
+    console.log("RESP", resp)
+
     dispatch({type: GET_ANUNCIOS, payload: resp.data })
 
 }

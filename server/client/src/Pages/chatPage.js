@@ -47,7 +47,7 @@ const ChatPage = (props) => {
     if (props.match.params.id !== undefined) {
 
       return () => {
-        socket.emit("disconnect");
+        socket.emit("desconectar");
         socket.off();
       };
     }
@@ -109,7 +109,7 @@ const ChatPage = (props) => {
   }
 
   const renderMessages = () => {
-    if (props.chat.messages !== null) {
+    if (props.chat.messages !== undefined) {
       return props.chat.messages.map((v, i) => {
         return (
           <div
@@ -145,6 +145,8 @@ const ChatPage = (props) => {
   };
 
   const renderChatsUser = () => {
+
+    console.log("CHATS USER", props.chat.chatsUser)
      
     if (props.chat.chatsUser !== null) {
         

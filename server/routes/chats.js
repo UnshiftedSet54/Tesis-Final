@@ -13,7 +13,7 @@ router.post('/createChat', async (req, res) => {
 
 })
 
-router.get('/chat/:id', async(req, res) => {
+router.get('/chatback/:id', async(req, res) => {
 
     const { id } = req.params
 

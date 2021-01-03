@@ -87,6 +87,8 @@ router.get('/getuserinfologged', async (req, res) => {
                 }
             })
         }
+
+        console.log("RESULT", result)
     
         return res.status(200).json({ result, propuestasNumber: propuestas.rows.length, propuestasReadNumber: propuestasReadNumber, finalData  })
 

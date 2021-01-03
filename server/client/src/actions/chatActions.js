@@ -14,7 +14,7 @@ export const createChat = (data) => async (dispatch) => {
 
 export const getChat = (id) => async (dispatch) => {
 
-    const res = await axios.get(`/chat/${id}`)
+    const res = await axios.get(`/chatback/${id}`)
 
     const messages = await axios.get(`/messages/${id}`)
 

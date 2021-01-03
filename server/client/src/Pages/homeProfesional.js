@@ -115,7 +115,9 @@ const HomeProfesional = ({
   /* Use Effect solo para escuchar a anuncios */
   useEffect(() => {
 
-    if(anuncios.anuncios !== null) {
+    console.log(anuncios.anuncios, "ANUNCIOS ANUNCIOS PRIMERO")
+
+    if(anuncios.anuncios !== undefined) {
 
       console.log(anuncios.anuncios, "ANUNCIOS ANUNCIOS")
 

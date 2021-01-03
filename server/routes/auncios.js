@@ -28,6 +28,8 @@ router.get("/anunciosnegocios", async (req, res) => {
         }
     })
 
+    console.log("FINAL RESULT", final_result)
+
 
     if ( array.includes("0") && (req.query.value === undefined || req.query.value === "" )  ) {
         return res.status(200).json({ anuncios: final_result, notificationsPropuestas: propuestasNotRead.rows.length  })
@@ -71,7 +73,6 @@ router.post("/anunciosnegocios", async (req, res) => {
 
     const { area_id, rubro_id, titulo, descripcion, disponibilidad } = req.body
 
-    console.log("REQ USER", req.user)
 
     
     const resp = await pool.query("INSERT INTO anuncios (username_freelancer, titulo, descripcion, disponibilidad) VALUES ($1, $2, $3, $4) RETURNING *", 
