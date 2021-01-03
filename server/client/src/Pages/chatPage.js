@@ -109,7 +109,7 @@ const ChatPage = (props) => {
   }
 
   const renderMessages = () => {
-    if (props.chat.messages !== undefined) {
+    if (props.chat.messages !== null) {
       return props.chat.messages.map((v, i) => {
         return (
           <div

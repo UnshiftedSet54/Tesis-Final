@@ -20,7 +20,7 @@ export const cleanPropuesta = () =>  {
     }
 }
 
-export const getPropuestas = (id) => async (dispatch) => {
+export const getPropuestas = (id, setIsLoading) => async (dispatch) => {
     
     let data = await axios.get(`/propuesta`)
 
@@ -28,6 +28,11 @@ export const getPropuestas = (id) => async (dispatch) => {
         type: GET_PROPUESTAS,
         payload: data.data.propuestas
     })
+
+    if (setIsLoading !== undefined) {
+        setIsLoading(false)
+    }
+
 }
 
 export const getPropuestaByAnuncio = (id) =>  async (dispatch) => {

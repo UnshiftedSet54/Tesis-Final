@@ -17,11 +17,20 @@ import {
 } from "react-bootstrap";
 
 /* Router */
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { logOut } from "../actions/authAction";
 
 const Navigation = ({ type, auth, onLogOut, anuncios }) => {
+
+  const location = useLocation()
+
+  useEffect(() => {
+
+    console.log("VERRR LOCATION", location)
+
+  }, [])
+
   const logOut = () => {
     onLogOut();
   };
@@ -93,6 +102,20 @@ const Navigation = ({ type, auth, onLogOut, anuncios }) => {
         <Navbar className="bg-success">
           <Navbar.Collapse>
             <Nav>
+
+              { location.pathname === "/home" ? null : (
+
+              <Nav.Item>
+                <Button variant="success">
+                  <Link to = "/home?b0=0&" style={{ color: "white" }}>
+                    Menu Principal
+                  </Link>
+                </Button>
+              </Nav.Item>
+
+              ) }
+
+
               {  auth.user.isbussines ? (
               <Nav.Item>
                 <Button variant="success">
