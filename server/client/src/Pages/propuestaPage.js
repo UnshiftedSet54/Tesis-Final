@@ -20,6 +20,9 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { cleanUserInfo, getUserInfo } from "../actions/userInfoActions";
 import { changeNotification } from "../actions/anunciosActions";
 import { createChat } from "../actions/chatActions"
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 
 const PropuestaPage = ({
@@ -35,7 +38,8 @@ const PropuestaPage = ({
   onCleanPropuestaByAnuncio,
   history,
   onCreateChat,
-  chat
+  chat,
+  msg
 }) => {
   const [show, setShow] = useState(false);
 
@@ -70,8 +74,10 @@ const PropuestaPage = ({
 
     if(chat !== null) {
       history.push(`/chat/${chat}`) 
+    } if (msg !== null) {
+      toast.warn(msg)
     }
-  }, [chat])
+  }, [chat, msg])
   
   const openModal = (v) => {
     setV(v)
@@ -196,8 +202,8 @@ const PropuestaPage = ({
     <div>
       <NavBar />
       {renderList()}
-
       {renderModal()}
+      <ToastContainer />
     </div>
   );
 };
@@ -208,7 +214,8 @@ const mapStateToProps = (state) => {
     isUpdated: propuesta.updated,
     propuestas: propuesta.propuestaByAnuncio,
     userInfo: userInfo.userInfo,
-    chat: chat.chatId
+    chat: chat.chatId,
+    msg: chat.msg
   };
 };
 

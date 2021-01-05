@@ -116,12 +116,15 @@ const Publicaciones = (props) => {
 
   useEffect(() => {
     
-    console.log("PUBLICACIONES")
     props.onHandleGetUserPost();
 
-    if (props.rubros.rubros.length == 0) {
-      props.onGetRubros();
+    if (props.rubros.rubros !== null) {
+
+      if (props.rubros.rubros.length == 0) {
+        props.onGetRubros();
+      }
     }
+
   }, []);
 
   useEffect(() => {
@@ -222,33 +225,36 @@ const Publicaciones = (props) => {
   );
 
   const renderItem = () => {
-    if (props.rubros.rubros.length > 0) {
-      return (
-        <Dropdown
-          drop="up"
-          style={{ marginTop: "20px", width: "100%", marginBottom: "20px" }}
-        >
-          <Dropdown.Toggle
-            style={{ width: "100%" }}
-            variant="success"
-            id="dropdown-basic"
+    if( props.rubros.rubros !== null) {
+      if (props.rubros.rubros.length > 0) {
+        return (
+          <Dropdown
+            drop="up"
+            style={{ marginTop: "20px", width: "100%", marginBottom: "20px" }}
           >
-            {selectedRubro.nombre}
-          </Dropdown.Toggle>
+            <Dropdown.Toggle
+              style={{ width: "100%" }}
+              variant="success"
+              id="dropdown-basic"
+            >
+              {selectedRubro.nombre}
+            </Dropdown.Toggle>
+  
+            <Dropdown.Menu
+              style={{ width: "100%" }}
+              className="dropdown-register"
+            >
+              <div style={{ display: "flex", justifyContent: "center" }}></div>
+              {props.rubros.rubros.map((value) => (
+                <Dropdown.Item onClick={() => stateChange(value)}>
+                  {value.nombre}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        );
+      }
 
-          <Dropdown.Menu
-            style={{ width: "100%" }}
-            className="dropdown-register"
-          >
-            <div style={{ display: "flex", justifyContent: "center" }}></div>
-            {props.rubros.rubros.map((value) => (
-              <Dropdown.Item onClick={() => stateChange(value)}>
-                {value.nombre}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-      );
     }
   };
 

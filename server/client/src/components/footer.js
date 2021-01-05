@@ -49,13 +49,13 @@ const Footer = () => {
                 Sobre nosotros
               </label>
               <label className="label-style">
-                Somos una empresa jkasnjkdnjadnasndjknasjkdnjasndjkaskdnas
+                Somos una empresa encargada del acercamiento de servicios profesionales
               </label>
             </div>
           </Col>
 
           <Col lg = {4} sm = {6}>
-            <div>
+            <div style = {{ marginLeft: "100px" }}>
               <Form>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label style = {{ color: 'white' }}>Danos tu opninion</Form.Label>

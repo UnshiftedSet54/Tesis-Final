@@ -109,7 +109,7 @@ const ChatPage = (props) => {
   }
 
   const renderMessages = () => {
-    if (props.chat.messages !== null) {
+    if (props.chat.messages) {
       return props.chat.messages.map((v, i) => {
         return (
           <div
@@ -148,7 +148,7 @@ const ChatPage = (props) => {
 
     console.log("CHATS USER", props.chat.chatsUser)
      
-    if (props.chat.chatsUser !== null) {
+    if (props.chat.chatsUser) {
         
         return props.chat.chatsUser.map(valor => {
             return (

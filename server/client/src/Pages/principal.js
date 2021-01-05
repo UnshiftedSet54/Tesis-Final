@@ -175,11 +175,11 @@ const Principal = (props) => {
                   />
                 </div>
                 <div style={{ textAlign: "center" }}>
-                  <label>Publica un trabajo</label>
+                  <label style = {{ display: "block"  }}>Publica un trabajo</label>
                   <label
                     style={{ overflowWrap: "break-word", display: "inline" }}
                   >
-                    asldnasdnasdniasdiasdasidnaindasndnaskdnasklndaklndklnakndkl
+                    Publica un trabajo en el caso de ser alguna empresa en busca de empleados.
                   </label>
                 </div>
               </div>
@@ -194,11 +194,11 @@ const Principal = (props) => {
                   />
                 </div>
                 <div style={{ textAlign: "center" }}>
-                  <label>Obten ofertas</label>
+                  <label style = {{ display: "block"  }}>Obten ofertas</label>
                   <label
                     style={{ overflowWrap: "break-word", display: "inline" }}
                   >
-                    asldnasdnasdniasdiasdasidnaindasndnaskdnasklndaklndklnakndkl
+                    Obten propuestas que vayan adaptados a tu rubro
                   </label>
                 </div>
               </div>
@@ -213,11 +213,11 @@ const Principal = (props) => {
                   />
                 </div>
                 <div style={{ textAlign: "center" }}>
-                  <label>Paga rapido y seguro</label>
+                  <label style = {{ display: "block"  }}>Paga rapido y seguro</label>
                   <label
                     style={{ overflowWrap: "break-word", display: "inline" }}
                   >
-                    asldnasdnasdniasdiasdasidnaindasndnaskdnasklndaklndklnakndkl
+                    Ponte de acuerdo con tus empleados por medio del chat y pagales de una forma segura
                   </label>
                 </div>
               </div>
@@ -232,15 +232,14 @@ const Principal = (props) => {
             <h1>Lo que ofrecemos</h1>
 
             <label>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et at eu,
-              accumsan vel egestas nunc. Eget mattis accumsan nullam nulla
-              dictumst varius tellus nec ultrices.
+              Ofrecemos un sistema web para profesionales Venezolanos y empresas Venezolanos que quieran destacar en sus profesiones
+              siguiendo los valores de:
             </label>
 
-            <label style={{ display: "block" }}>- Element</label>
-            <label style={{ display: "block" }}>- Element</label>
-            <label style={{ display: "block" }}>- Element</label>
-            <label style={{ display: "block" }}>- Element</label>
+            <label style={{ display: "block" }}>- Transparencia</label>
+            <label style={{ display: "block" }}>- Respeto</label>
+            <label style={{ display: "block" }}>- Trabajo</label>
+            <label style={{ display: "block" }}>- Confianza</label>
           </Col>
 
           <Col style = {{ display: 'flex', textAlign: 'center' }}>

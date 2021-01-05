@@ -1,15 +1,23 @@
 import axios from "axios";
 
-import { CREATE_CHAT, GET_CHAT_BY_ID, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE  } from "./types";
+import { CREATE_CHAT, GET_CHAT_BY_ID, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE, CHECK_IF_EXIST  } from "./types";
 
 export const createChat = (data) => async (dispatch) => {
 
    const res = await axios.post('/createChat', data)
 
-    dispatch({
-        type: CREATE_CHAT,
-        payload : res.data.chatId
-    })
+   if (res.data.msg !== undefined) {
+       dispatch({
+           type: CHECK_IF_EXIST,
+           payload : res.data.msg
+       })
+   } else {
+       dispatch({
+           type: CREATE_CHAT,
+           payload : res.data.chatId
+       })
+   }
+
 }
 
 export const getChat = (id) => async (dispatch) => {

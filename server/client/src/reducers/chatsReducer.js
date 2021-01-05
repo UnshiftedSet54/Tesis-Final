@@ -1,9 +1,10 @@
-import { CREATE_CHAT, GET_CHAT_BY_ID, GET_MESSAGES, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE } from '../actions/types'
+import { CREATE_CHAT, GET_CHAT_BY_ID, GET_MESSAGES, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE, CHECK_IF_EXIST } from '../actions/types'
 
 const initialState = {
     chatId: null,
     messages: null,
     chatsUser: null,
+    msg: null
 };
   
 export default function (state = initialState, action) {
@@ -37,9 +38,16 @@ export default function (state = initialState, action) {
                 chatsUser: action.payload
             }
         case PUSH_LAST_MESSAGE:
-            state.chatsUser[action.payload.index].lastMessage = action.payload.value.lastMessage
+            if (state.chatsUser[action.payload.index] !== undefined) {
+                state.chatsUser[action.payload.index].lastMessage = action.payload.value.lastMessage
+            }
             return {
                 ...state
+            }
+        case CHECK_IF_EXIST:
+            return {
+                ...state,
+                msg: action.payload
             }
         default: 
             return state

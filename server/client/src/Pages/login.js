@@ -76,10 +76,6 @@ const Login = ({ onLogin, history, auth, error, clearErrors }) => {
     }
     if (usuario == "") {
       errorHandler(setUserError, "Por favor, ingrese valores en el input");
-    } else if (usuario.length < 4) {
-      errorHandler(setUserError, "Usuario muy corto");
-    } else if (password == "") {
-      errorHandler(setPasswordError, "Por favor, ingrese valores en el input");
     } else if (password.length < 4) {
       errorHandler(setPasswordError, "Contraseña muy corta");
     } else {

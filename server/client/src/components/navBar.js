@@ -25,12 +25,6 @@ const Navigation = ({ type, auth, onLogOut, anuncios }) => {
 
   const location = useLocation()
 
-  useEffect(() => {
-
-    console.log("VERRR LOCATION", location)
-
-  }, [])
-
   const logOut = () => {
     onLogOut();
   };

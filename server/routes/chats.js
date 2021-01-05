@@ -7,6 +7,10 @@ router.post('/createChat', async (req, res) => {
 
     const { username_freelancer_two  } = req.body
 
+    const checkExist = await pool.query('select * from chat where username_freelancer_two = $1 AND username_freelancer_one = $2', [username_freelancer_two, req.user.username_freelancer])
+
+    if (checkExist.rows) return res.status(200).json( { msg : 'Redireccionando' } )
+
     const resp = await pool.query("INSERT INTO chat (username_freelancer_one, username_freelancer_two) VALUES ($1, $2) RETURNING *", [req.user.username_freelancer, username_freelancer_two])
 
     return res.status(200).json( { chatId: resp.rows[0].chat_id  }  )
