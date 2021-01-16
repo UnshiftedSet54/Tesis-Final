@@ -3,7 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import { connect } from "react-redux";
 
-import { Button, ListGroup, Modal, Badge } from "react-bootstrap";
+import { Button, ListGroup, Modal, Badge , Spinner } from "react-bootstrap";
 
 import { useParams } from "react-router-dom";
 
@@ -39,16 +39,19 @@ const PropuestaPage = ({
   history,
   onCreateChat,
   chat,
-  msg
+  msg,
+  propuestaLoad
 }) => {
   const [show, setShow] = useState(false);
 
   const [v, setV] = useState("")
 
+  const [isLoading , setIsLoading] = useState(true)
+
   let { id } = useParams();
 
   useEffect(() => {
-    onGetByAnuncio(id);
+    onGetByAnuncio(id, setIsLoading);
   }, []);
 
   useEffect(() => {
@@ -74,10 +77,18 @@ const PropuestaPage = ({
 
     if(chat !== null) {
       history.push(`/chat/${chat}`) 
-    } if (msg !== null) {
-      toast.warn(msg)
     }
   }, [chat, msg])
+
+
+  useEffect(() => {
+
+    return () => {
+      setShow(false)
+      onCleanUserInfo()
+    }
+
+  }, [])
   
   const openModal = (v) => {
     setV(v)
@@ -94,7 +105,7 @@ const PropuestaPage = ({
       onChangeNotification()
     }
 
-    onGetByAnuncio(id);
+    onGetByAnuncio(id, setIsLoading);
   }
 
   const createChat = () => {
@@ -105,7 +116,7 @@ const PropuestaPage = ({
     })
 
   }
-
+  
   const renderModal = () => {
     if (show) {
       return (
@@ -163,47 +174,71 @@ const PropuestaPage = ({
   };
 
   const renderList = () => {
-    if (propuestas !== null) {
-      return (
-        <ListGroup className="list-group-container">
-          {propuestas.map((propuesta) => {
-            return (
-              <ListGroup.Item
-                style={{ marginTop: "20px", width: "80%" }}
-                className="listgroup-description"
-              >
-                <h1 style={{ textAlign: "center" }}>Descripcion</h1>
-                <div className = "description-container">
 
-                <div style={{ marginBottom: "10px", marginTop: "20px" }}>
-                  {propuesta.descripcion}
-                </div>
+    if (propuestaLoad) {
 
-                <div style = {{ marginRight: '40px' }}>
-                  { propuesta.isread ? <Badge style = {{ padding: '5px' }} variant="success">Leido</Badge> : <Badge style = {{ padding: '5px' }} variant="warning">No leido</Badge>  }
-                </div>
+      return(
+        <div style = {{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+        <Spinner animation="border" role="status" />
+        <h1>Cargando...</h1>
+        </div>
+      )
 
-                </div>
-                <div className="footer-container">
-                  <label>Enviado por: {propuesta.user_prop} </label>
-                  <Button onClick={() => openModal(propuesta)}>
-                    Ver informacion de {propuesta.user_prop}
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            );
-          })}
-        </ListGroup>
-      );
+    } else {
+     
+      if (!!propuestas) {
+
+        if (propuestas.length === 0) {
+          return (
+          <div style  = {{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <h1>No hay propuestas..</h1>
+          </div>
+          )
+        } else {
+          return (
+            <ListGroup className="list-group-container">
+              {propuestas.map((propuesta) => {
+                return (
+                  <ListGroup.Item
+                    style={{ marginTop: "20px", width: "80%" }}
+                    className="listgroup-description"
+                  >
+                    <h1 style={{ textAlign: "center" }}>Descripcion</h1>
+                    <div className = "description-container">
+    
+                    <div style={{ marginBottom: "10px", marginTop: "20px" }}>
+                      {propuesta.descripcion}
+                    </div>
+    
+                    <div style = {{ marginRight: '40px' }}>
+                      { propuesta.isread ? <Badge style = {{ padding: '5px' }} variant="success">Leido</Badge> : <Badge style = {{ padding: '5px' }} variant="warning">No leido</Badge>  }
+                    </div>
+    
+                    </div>
+                    <div className="footer-container">
+                      <label>Enviado por: {propuesta.user_prop} </label>
+                      <Button onClick={() => openModal(propuesta)}>
+                        Ver informacion de {propuesta.user_prop}
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                );
+              })}
+            </ListGroup>
+          )
+        }
+      }
     }
   };
 
   return (
-    <div>
+    <div style = {{ height: '100vh' }}>
+      <div style={{ display: "flex", height: "100%", flexDirection: "column" }} >
       <NavBar />
       {renderList()}
       {renderModal()}
       <ToastContainer />
+      </div>
     </div>
   );
 };
@@ -215,14 +250,15 @@ const mapStateToProps = (state) => {
     propuestas: propuesta.propuestaByAnuncio,
     userInfo: userInfo.userInfo,
     chat: chat.chatId,
-    msg: chat.msg
+    msg: chat.msg,
+    propuestaLoad : propuesta.isLoading
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetByAnuncio: (id) => {
-      dispatch(getPropuestaByAnuncio(id));
+    onGetByAnuncio: (id, setIsLoading) => {
+      dispatch(getPropuestaByAnuncio(id, setIsLoading));
     },
     onGetUserInfo: (id) => {
       dispatch(getUserInfo(id));

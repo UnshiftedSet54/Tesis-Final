@@ -9,7 +9,7 @@ router.post('/createChat', async (req, res) => {
 
     const checkExist = await pool.query('select * from chat where username_freelancer_two = $1 AND username_freelancer_one = $2', [username_freelancer_two, req.user.username_freelancer])
 
-    if (checkExist.rows) return res.status(200).json( { msg : 'Redireccionando' } )
+    if (checkExist.rows.length > 0) return res.status(200).json( { chatId : checkExist.rows[0].chat_id } )
 
     const resp = await pool.query("INSERT INTO chat (username_freelancer_one, username_freelancer_two) VALUES ($1, $2) RETURNING *", [req.user.username_freelancer, username_freelancer_two])
 
@@ -31,8 +31,6 @@ router.get('/messages/:id', async (req, res) => {
 
     const { id } = req.params
 
-    console.log("ID", id)
-
     const resp = await pool.query("SELECT * FROM mensajes where chat_id = $1", [id])
 
     return res.status(200).json({ messages: resp.rows })
@@ -40,8 +38,6 @@ router.get('/messages/:id', async (req, res) => {
 })
 
 router.get('/chatuser', async (req, res) => {
-
-    console.log("ETNRA")
        
     let resp
     
@@ -80,8 +76,6 @@ router.get('/chatuser', async (req, res) => {
             }).reverse()[0]
         }
     })
-
-    console.log("MENSAJE INFO", mensajeInfo)
     
     return res.status(200).json({ mensajeInfo })
 

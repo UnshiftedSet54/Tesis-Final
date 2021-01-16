@@ -1,4 +1,4 @@
-import { CREATE_CHAT, GET_CHAT_BY_ID, GET_MESSAGES, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE, CHECK_IF_EXIST } from '../actions/types'
+import { CREATE_CHAT, GET_CHAT_BY_ID, GET_MESSAGES, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE, CLEAN_CHAT } from '../actions/types'
 
 const initialState = {
     chatId: null,
@@ -44,10 +44,12 @@ export default function (state = initialState, action) {
             return {
                 ...state
             }
-        case CHECK_IF_EXIST:
+        case CLEAN_CHAT:
             return {
-                ...state,
-                msg: action.payload
+            chatId: null,
+            messages: null,
+            chatsUser: null,
+            msg: null  
             }
         default: 
             return state

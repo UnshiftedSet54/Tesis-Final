@@ -1,10 +1,11 @@
-import { SEND_PROPUESTA, CLEAN_PROPUESTA, GET_PROPUESTAS, GET_PROPUESTA_BY_ANUNCIO, UPDATED_PROPUESTA, CLEAN_UPDATED, CLEAN_PROPUESTA_BY_ANUNCIO } from "../actions/types";
+import { SEND_PROPUESTA, CLEAN_PROPUESTA, GET_PROPUESTAS, GET_PROPUESTA_BY_ANUNCIO, UPDATED_PROPUESTA, CLEAN_UPDATED, CLEAN_PROPUESTA_BY_ANUNCIO, LOAD_PROPUESTA } from "../actions/types";
 
 const initialState = {
   msg: null,
   propuestasByUser: null,
   propuestaByAnuncio: null,
-  updated: false
+  updated: false,
+  isLoading: false
 };
 
 export default function (state = initialState, action) {
@@ -22,11 +23,13 @@ export default function (state = initialState, action) {
     case GET_PROPUESTAS:
         return {
             ...state,
-            propuestasByUser: action.payload
+            propuestasByUser: action.payload,
+            loading: true
         }
     case GET_PROPUESTA_BY_ANUNCIO:
         return {
           ...state,
+          isLoading: false,
           propuestaByAnuncio: action.payload
         }
     case UPDATED_PROPUESTA:
@@ -43,6 +46,11 @@ export default function (state = initialState, action) {
         return {
           ...state,
           propuestaByAnuncio: null
+        }
+    case LOAD_PROPUESTA:
+        return {
+          ...state,
+          isLoading: true
         }
     default:
         return state;

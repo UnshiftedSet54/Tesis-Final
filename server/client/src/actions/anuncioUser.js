@@ -48,9 +48,7 @@ export const saveAnuncio = (data) => async (dispatch) => {
 
     let respuesta = await axios.post('/anunciosnegocios', data)
 
-    console.log("RESPUESTAAA", respuesta.data.message)
-
-    dispatch( { type: SAVE_ANUNCIO, payload: { message: respuesta.data.message   }  }  )
+    dispatch( { type: SAVE_ANUNCIO, payload: respuesta.data.message  }  )
 
     dispatch({type: LOADING_ANUNCIO_BY_USER })
 

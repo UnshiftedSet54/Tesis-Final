@@ -45,6 +45,7 @@ export const GET_PROPUESTA_BY_ANUNCIO = "GET_PROPUESTA_BY_ANUNCIO"
 export const UPDATED_PROPUESTA = "UPDATED_PROPUESTA"
 export const CLEAN_UPDATED = "CLEAN_UPDATED";
 export const CLEAN_PROPUESTA_BY_ANUNCIO = 'CLEAN_PROPUESTA_BY_ANUNCIO'
+export const LOAD_PROPUESTA = 'LOAD_PROPUESTA'
 
 /* User info cuando (usuario no logeado) */
 export const GET_USER_INFO = 'GET_USER_INFO'
@@ -57,7 +58,7 @@ export const GET_MESSAGES = 'GET_MESSAGES'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const GET_CHATS_BY_USER = 'GET_CHATS_BY_USER'
 export const PUSH_LAST_MESSAGE = 'PUSH_LAST_MESSAGE'
-export const CHECK_IF_EXIST = "CHECK_IF_EXIST"
+export const CLEAN_CHAT = "CLEAN_CHAT"
 
 /* User info del usuario logeado */
 export const GET_USERINFO_LOGGED = 'GET_USERINFO_LOGGED'

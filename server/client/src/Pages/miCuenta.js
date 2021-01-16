@@ -21,9 +21,9 @@ const MiCuenta = (props) => {
         <Tab eventKey="home" title="Home">
           <Cuenta />
         </Tab>
-        <Tab eventKey="profile" title="Profile">
+        {/* <Tab eventKey="profile" title="Profile">
           <MiPerfil />
-        </Tab>
+        </Tab> */}
       </Tabs>
     </div>
   );

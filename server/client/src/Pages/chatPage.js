@@ -13,7 +13,7 @@ import { io } from "socket.io-client";
 
 import { Button, Form, Container, Col, Row, ListGroup } from "react-bootstrap";
 
-import { getChat, pushMessage, getChatsByUser, pushLastMessage } from "../actions/chatActions";
+import { getChat, pushMessage, getChatsByUser, pushLastMessage, cleanChat } from "../actions/chatActions";
 
 import "../styles/PageStyles/chatPage.css";
 
@@ -52,6 +52,14 @@ const ChatPage = (props) => {
       };
     }
   }, []);
+
+  useEffect (() => {
+
+    return () => {
+      props.onCleanChat()
+    }
+
+  }, [])
 
   useEffect(() => {
     if (props.match.params.id !== undefined) {
@@ -195,7 +203,7 @@ const ChatPage = (props) => {
           >
             {/* Este es el header */}
             <FontAwesomeIcon
-              onClick={() => props.auth.user.isbussines ?  props.history.push("/mispublicaciones") : props.history.push("/usuariopropuestas") }
+              onClick={() => props.auth.user.isbussines ? props.history.push("/mispublicaciones") : props.history.push("/usuariopropuestas")  }
               icon={faArrowLeft}
               style={{ marginLeft: "10%", fontSize: "30px" }}
             />
@@ -306,6 +314,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onPushLastMessage: (chat_id) => {
       dispatch(pushLastMessage(chat_id))
+    },
+    onCleanChat: () => {
+      dispatch(cleanChat())
     }
   };
 };
