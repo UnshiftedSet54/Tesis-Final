@@ -1,8 +1,9 @@
-import { GET_USER_INFO, CLEAN_USER_INFO, GET_USERINFO_LOGGED } from '../actions/types'
+import { GET_USER_INFO, CLEAN_USER_INFO, GET_USERINFO_LOGGED, UPDATE_USERINFO_LOGGED, UPLOAD_FILE } from '../actions/types'
 
 const initialState = {
     userInfo: null,
-    userLoggedInfo: null
+    userLoggedInfo: null,
+    isLoading: false
 };
   
 
@@ -24,6 +25,23 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userLoggedInfo: action.payload
+            }
+        case UPDATE_USERINFO_LOGGED:
+            return {
+                ...state, 
+                isLoading: false,
+                userLoggedInfo: {
+                    ...state.userLoggedInfo,
+                    result: {
+                        ...state.userLoggedInfo.result,
+                        pdf_url: action.payload
+                    }
+                }
+            }
+        case UPLOAD_FILE:
+            return {
+                ...state,
+                isLoading: true
             }
         default: 
             return state

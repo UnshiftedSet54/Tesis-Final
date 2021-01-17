@@ -79,7 +79,6 @@ const Login = ({ onLogin, history, auth, error, clearErrors }) => {
     } else if (password.length < 4) {
       errorHandler(setPasswordError, "Contraseña muy corta");
     } else {
-      console.log("VER")
       onLogin(usuario, password, history);
     }
   };

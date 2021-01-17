@@ -25,8 +25,8 @@ const UserPropuestas = ({ auth, onGetPropuesta, propuestas }) => {
         if (propuestas.length > 0) {
           return (
             <ListGroup>
-              {propuestas.map((v) => (
-                <ListGroup.Item>
+              {propuestas.map((v, i) => (
+                <ListGroup.Item key = {i}>
                   <div className="propuestas-container">
                     <div>
                       <h3>{v.descripcion}</h3>

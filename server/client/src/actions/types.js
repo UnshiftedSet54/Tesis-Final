@@ -62,3 +62,5 @@ export const CLEAN_CHAT = "CLEAN_CHAT"
 
 /* User info del usuario logeado */
 export const GET_USERINFO_LOGGED = 'GET_USERINFO_LOGGED'
+export const UPDATE_USERINFO_LOGGED = 'UPDATE_USERINFO_LOGGED'
+export const UPLOAD_FILE = 'UPLOAD_FILE'

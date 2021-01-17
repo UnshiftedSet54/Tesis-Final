@@ -33,7 +33,6 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        { console.log("USER", JSON.parse(localStorage.getItem("user"))) }
 
         <PrivateRouteLoggedIn exact path = "/" component = {Principal} />
 

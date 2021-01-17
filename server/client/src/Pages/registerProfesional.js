@@ -42,10 +42,7 @@ const RegisterProfesional = (props) => {
 
   useEffect(() => {
 
-    console.log("PROPS", props)
-
     if (props.error.id != null) {
-      console.log("ERROR", props.error)
       toast.error(props.error.msg.message)
       props.clearErrors()
     }
@@ -322,8 +319,8 @@ const RegisterProfesional = (props) => {
                 onChange={ (e) => setStates(states.filter( (v) => v.includes(e.target.value) ) )  }
               />
                 </div>
-                {states.map((value) => (
-                  <Dropdown.Item onClick={() => stateChange(value)}>
+                {states.map((value, i) => (
+                  <Dropdown.Item key = {i} onClick={() => stateChange(value)}>
                     {value}
                   </Dropdown.Item>
                 ))}

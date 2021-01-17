@@ -3,16 +3,16 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 
 import {  connect } from 'react-redux'
 
-import { getUserInfoLogged, updateUrl  } from "../actions/userInfoActions"
+import { getUserInfoLogged, updateUrl, onLoadURL  } from "../actions/userInfoActions"
 
-import { Container, Col, Row, Button, Form, Dropdown, Card } from "react-bootstrap";
+import { Container, Col, Row, Button, Form, Dropdown, Card, Spinner } from "react-bootstrap";
 
 import { storage } from "../firebase/index"
 
 import { Bar, Doughnut } from 'react-chartjs-2';
 
 
-const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
+const Cuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl, onLoadUpdate }) => {
 
   const inputRef = useRef(null)
 
@@ -150,25 +150,28 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
 
 
   const guardarPdf =  async () => {
+    
+    onLoadUpdate()
 
     const updateTask = storage.refFromURL(userInfo.userLoggedInfo.result.pdf_url)
 
-    const uploadTask = storage.ref(`pdf/${auth.username_freelancer}${pdf.name}`).put(pdf);
+    const uploadTask = storage.ref(`pdf/${auth.user.username_freelancer}${pdf.name}`).put(pdf);
 
     updateTask.delete().then(valor => {
       uploadTask.on(
         "state_changed",
         snapshot => {},
         error => {
-          console.log(error)
+          console.log("ERROR", error)
         },
         () => {
           storage
             .ref("pdf")
-            .child(auth.username_freelancer+pdf.name)
+            .child(auth.user.username_freelancer+pdf.name)
             .getDownloadURL()
             .then( async newUrl => {
               onUpdateUrl(newUrl)
+              setIsEditMode(false)
             })
         }
       )
@@ -197,12 +200,6 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
 
   }
 
-  const renderGraph = () => {
-
-
-
-  }
-
   return (
     <div>
       <Row style = {{ marginRight: '0px', marginLeft: '0px' }}>
@@ -215,14 +212,14 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
 
           <div style = {{ flexGrow: '1' }}>
           <Form.Label style = {{ textAlign: 'center', display: 'block' }}>Usuario</Form.Label>
-          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_freelancer : null } disabled={true} />
+          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_freelancer : '' } disabled={true} />
           </div>
 
           <div style = {{ flexGrow: '0.5' }}></div>
 
           <div style = {{ flexGrow:'1' }}>
           <Form.Label style = {{  textAlign: 'center', display: 'block' }}>Nombre</Form.Label>
-          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_nombre : null } disabled ={true} />
+          <Form.Control value = {  userInfo.userLoggedInfo !== null ? userInfo.userLoggedInfo.result.username_nombre : '' } disabled ={true} />
           </div>
 
           </div>
@@ -243,8 +240,8 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
 
               <Dropdown.Menu style={{ width: "100%"}} className = "dropdown-register">
                 
-                {states.map((value) => (
-                  <Dropdown.Item onClick={() => setSelectedState(value)}>
+                {states.map((value, i) => (
+                  <Dropdown.Item key = {i} onClick={() => setSelectedState(value)}>
                     {value}
                   </Dropdown.Item>
                 ))}
@@ -277,10 +274,10 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
           <div>
 
             <Row>
-              { userInfo.userLoggedInfo !== null ?  userInfo.userLoggedInfo.result.area_info.map(valor => {
+              { userInfo.userLoggedInfo !== null ?  userInfo.userLoggedInfo.result.area_info.map((valor, i) => {
 
                 return (
-                  <Col lg = {6}>
+                  <Col lg = {6} key = {i}>
                     <Card>
                         <Card.Body>
                           <label style = { { display: 'block' } }>Area: {valor.nombre_area}</label>
@@ -297,9 +294,27 @@ const MiCuenta = ({ onGetInfoUserLogged, auth, userInfo, onUpdateUrl }) => {
           </div>
 
           { renderItems() }
+          <div>
+
+              { userInfo.isLoading ?  (
+                <div style = {{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: '40px' }}>
+                  <Spinner
+                      animation="border"
+                      variant="success"
+                      style={{ width: "40px", height: "40px" }}
+                    >
+                    </Spinner>
+                    <label>Subiendo...</label>
+                </div>
+              ) : (
+                null
+              )  }
+              
           </div>
 
+          </div>
 
+          
 
 
         </Col>
@@ -334,9 +349,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdateUrl: (newUrl) => {
       dispatch(updateUrl(newUrl))
+    },
+    onLoadUpdate : () => {
+      dispatch(onLoadURL())
     }
   }
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (MiCuenta)
+export default connect(mapStateToProps, mapDispatchToProps) (Cuenta)

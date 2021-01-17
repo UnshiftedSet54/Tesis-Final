@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {  GET_USER_INFO, CLEAN_USER_INFO, GET_USERINFO_LOGGED  } from "./types";
+import {  GET_USER_INFO, CLEAN_USER_INFO, GET_USERINFO_LOGGED, UPDATE_USERINFO_LOGGED, UPLOAD_FILE } from "./types";
 
 export const getUserInfo = (id) => async (dispatch) => {
 
@@ -37,5 +37,18 @@ export const updateUrl = (newUrl) => async (dispatch) => {
 
 
     const resp = await axios.put('/getuserinfologged', {  newUrl })
+
+    dispatch({
+        type: UPDATE_USERINFO_LOGGED,
+        payload : resp.data.url
+    })
+
+}
+
+export const onLoadURL = () => {
+
+    return {
+        type : UPLOAD_FILE
+    }
 
 }

@@ -245,8 +245,8 @@ const Publicaciones = (props) => {
               className="dropdown-register"
             >
               <div style={{ display: "flex", justifyContent: "center" }}></div>
-              {props.rubros.rubros.map((value) => (
-                <Dropdown.Item onClick={() => stateChange(value)}>
+              {props.rubros.rubros.map((value, i) => (
+                <Dropdown.Item key = {i} onClick={() => stateChange(value)}>
                   {value.nombre}
                 </Dropdown.Item>
               ))}
@@ -411,7 +411,7 @@ const Publicaciones = (props) => {
           {anuncios.length > 0 ? (
             anuncios.map((v, i) => {
               return (
-                <Col md={4}>
+                <Col md={4} key = {i}>
                   <Card style={{ marginTop: "30px" }}>
                     <Card.Body>
                       <div style={{ height: "70px" }}>
@@ -512,6 +512,7 @@ const Publicaciones = (props) => {
                   {chips.map((v, i) => {
                     return (
                       <div
+                        key = {i}
                         className="chips-container"
                         style={{ backgroundColor: 'green' }}
                       >

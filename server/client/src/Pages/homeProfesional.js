@@ -67,6 +67,8 @@ const HomeProfesional = ({
 
   const [currentSelected, setCurrentSelected] = useState("")
 
+  const [isFirstRender, setIsFirstRender] = useState(true)
+
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -85,7 +87,7 @@ const HomeProfesional = ({
 
   useEffect(() => {
 
-    onGetAnuncios();
+    // onGetAnuncios(history.location.search);
     onGetPropuestas(auth.user.username_freelancer)
 
     /* Hacer peticion si aun no tenemos los rubros en redux */
@@ -115,11 +117,9 @@ const HomeProfesional = ({
   /* Use Effect solo para escuchar a anuncios */
   useEffect(() => {
 
-    console.log(anuncios.anuncios, "ANUNCIOS ANUNCIOS PRIMERO")
 
     if(anuncios.anuncios !== undefined) {
 
-      console.log(anuncios.anuncios, "ANUNCIOS ANUNCIOS")
 
       let anunciosFilter = anuncios.anuncios.filter(v => v.username_freelancer !== auth.user.username_freelancer  )
 
@@ -135,6 +135,8 @@ const HomeProfesional = ({
       
     if(chips.length > 0) {
 
+      console.log("ENTRA")
+
       chips.map( (v, i) => {
         query += "b"  +i + "=" + v.id + "&"
       })
@@ -144,9 +146,11 @@ const HomeProfesional = ({
         search: query
       }))
 
+      console.log("QUERY", query)
       onGetAnuncios(query)
 
     } else {
+      console.log("ELSE")
       history.push({
         patname: '/home',
         search: ''
@@ -282,7 +286,7 @@ const HomeProfesional = ({
       <ToastContainer />
       <NavBar />
       <header>
-        <Carousel fade={true}>
+        <Carousel slide={false} fade={false}>
           <Carousel.Item interval={5000}>
             <img
               className="d-block w-100"
@@ -336,6 +340,7 @@ const HomeProfesional = ({
                   ? rubrosState.map((v, i) => {
                       return (
                         <div
+                          key = {i}
                           style={{ display: "flex", flexDirection: "column" }}
                         >
                           <label>
@@ -384,6 +389,7 @@ const HomeProfesional = ({
                 {chips.map((v, i) => {
                   return (
                     <div
+                      key = {i}
                       className="chips-container-home-user"
                       style={{ backgroundColor: "#18D735" }}
                     >
@@ -407,7 +413,7 @@ const HomeProfesional = ({
               anunciosUsers.map((v, i) => {
                 return (
                   
-              <Card style = {{ marginTop: '30px', borderColor: 'green', borderWidth: '3px' }} className = "shadow">
+              <Card key = {i} style = {{ marginTop: '30px', borderColor: 'green', borderWidth: '3px' }} className = "shadow">
               <Card.Body>
                 <div className = "titulo-container">
                 <Card.Title style = {{ width : '60%' }}>{ v.titulo }</Card.Title>
@@ -419,9 +425,10 @@ const HomeProfesional = ({
                 
                 <div className="chips-home-user">
                 
-                { v.area_Info.map(area => {
+                { v.area_Info.map((area, i) => {
                   return (
                     <div
+                      key = {i}
                       className="chips-container-post-user"
                       style={{ backgroundColor: "#18D735" }}
                     >
@@ -461,6 +468,7 @@ const HomeProfesional = ({
         show={show}
         backdrop="static"
         keyboard={false}
+        onHide = { () => setShow(false)}
       >
         <Modal.Header closeButton>
           <Modal.Title>Ingresa una descripcion de tu propuesta</Modal.Title>
@@ -469,8 +477,8 @@ const HomeProfesional = ({
         <FormControl as = "textarea" placeholder="Descripcion" onChange = { (e) => setDescripcion(e.target.value)  }  />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary">
-            Close
+          <Button variant="secondary" onClick = { () => setShow(false)  }>
+            Cerrar
           </Button>
           <Button variant="primary" onClick = { () => sendPropuesta() }>Enviar</Button>
         </Modal.Footer>

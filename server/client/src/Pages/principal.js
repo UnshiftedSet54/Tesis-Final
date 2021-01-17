@@ -153,7 +153,7 @@ const Principal = (props) => {
         <Row>
           {categories.map((v, i) => {
             return (
-              <Col lg={3} sm={6}>
+              <Col key = {i} lg={3} sm={6}>
                 <Categories content={v} />
               </Col>
             );

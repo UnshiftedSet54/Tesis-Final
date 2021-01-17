@@ -8,8 +8,6 @@ export const getAnuncioByUser = () => async (dispatch) => {
 
     const resp = await axios.get('/personalposts')
 
-    console.log(resp)
-
     dispatch({type: GET_ANUNCIO_BY_USER, payload: resp.data.anuncios })
 
 }

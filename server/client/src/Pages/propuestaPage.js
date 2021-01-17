@@ -152,9 +152,9 @@ const PropuestaPage = ({
               Areas que maneja {userInfo.username_nombre}
             </h4>
             <ListGroup>
-              {userInfo.area_info.map((area) => {
+              {userInfo.area_info.map((area, i) => {
                 return (
-                  <ListGroup.Item>
+                  <ListGroup.Item key = {i}>
                     <label style={{ display: "block" }}>
                       Area: {area.nombre_area}
                     </label>

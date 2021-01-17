@@ -26,8 +26,6 @@ export const getChat = (id) => async (dispatch) => {
 
 export const pushMessage = message => {
 
-    console.log("MENSAJE", message)
-
     return {
         type: SEND_MESSAGE,
         payload: message
@@ -44,8 +42,6 @@ export const getChatsByUser = (id) => async (dispatch) => {
    
      
     const resp = await axios.get(`/chatuser`)
-
-    console.log("RESP CHAT INFO", resp.data)
 
     dispatch({
         type: GET_CHATS_BY_USER,

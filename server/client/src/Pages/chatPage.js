@@ -121,6 +121,7 @@ const ChatPage = (props) => {
       return props.chat.messages.map((v, i) => {
         return (
           <div
+            key = {i}
             style={{
               display: "flex",
               justifyContent:
@@ -153,14 +154,12 @@ const ChatPage = (props) => {
   };
 
   const renderChatsUser = () => {
-
-    console.log("CHATS USER", props.chat.chatsUser)
      
     if (props.chat.chatsUser) {
         
-        return props.chat.chatsUser.map(valor => {
+        return props.chat.chatsUser.map((valor, i) => {
             return (
-                <ListGroup>
+                <ListGroup key = {i}>
                    <ListGroup.Item onClick = { () => props.history.push(`/chat/${valor.chat_id}`) }>
                        <h4>{ valor.username_freelancer_one !== props.auth.user.username_freelancer ? valor.username_freelancer_one : valor.username_freelancer_two  }</h4>
                        <label> { valor.lastMessage.username_freelancer === props.auth.user.username_freelancer ? "Tu" : valor.lastMessage.username_freelancer } : { valor.lastMessage.texto  }</label>

@@ -100,14 +100,17 @@ router.get('/getuserinfologged', async (req, res) => {
     }
 })
 
-router.put('/getuserinfologged', (req, res) => {
+router.put('/getuserinfologged', async (req, res) => {
 
     const { newUrl } = req.body
 
     console.log("NEW URL", req.body)
 
-    pool.query("UPDATE freelancerusuario set pdf_url = $1 where username_freelancer = $2 RETURNING *", [newUrl, req.user.username_freelancer])
+    await pool.query("UPDATE freelancerusuario set pdf_url = $1 where username_freelancer = $2 RETURNING *", [newUrl, req.user.username_freelancer])
 
+    return res.status(200).json({
+        url: newUrl
+    })
 
 })
 

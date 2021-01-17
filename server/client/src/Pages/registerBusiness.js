@@ -40,10 +40,7 @@ const RegisterBusiness = (props) => {
 
   useEffect(() => {
 
-    console.log("PROPS", props)
-
     if (props.error.id != null) {
-      console.log("ERROR", props.error)
       toast.error(props.error.msg.message)
       props.clearErrors()
     }
@@ -114,12 +111,19 @@ const RegisterBusiness = (props) => {
 
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
-  let copyStates = [...states]
+  const [copyStates, setCopyStates] = useState([...states])
+
 
   const stateChange = (v) => {
     setSelectedState(v);
     setUserInfo({ ...userInfo, state: v });
   };
+
+  const onFilterState = (value) => {
+
+    setCopyStates(states.filter( (v) => v.includes(value) ) )
+
+  }
 
   const checkForm = () => {
     if (userInfo.name === "") {
@@ -146,8 +150,8 @@ const RegisterBusiness = (props) => {
 
   const rubros = () => {
     if (props.rubros.rubros !== null ) {
-      return props.rubros.rubros.map((value) => (
-       <Dropdown.Item onClick={() => changeRubro(value)}>
+      return props.rubros.rubros.map((value, i) => (
+       <Dropdown.Item key = {i} onClick={() => changeRubro(value)}>
          {value.nombre}
        </Dropdown.Item>
      ))
@@ -332,12 +336,12 @@ const RegisterBusiness = (props) => {
                 <div style = {{  display: 'flex', justifyContent: 'center' }}>
 
               <FormControl style = {{ width: '90%' }}
-                placeholder="Ingrese rubro"
-                onChange={ (e) => setStates(states.filter( (v) => v.includes(e.target.value) ) )  }
+                placeholder="Ingrese estado"
+                onChange={ (e) =>  onFilterState(e.target.value) }
               />
                 </div>
-                {states.map((value) => (
-                  <Dropdown.Item onClick={() => stateChange(value)}>
+                {copyStates.map((value, i) => (
+                  <Dropdown.Item key = {i} onClick={() => stateChange(value)}>
                     {value}
                   </Dropdown.Item>
                 ))}
@@ -355,13 +359,7 @@ const RegisterBusiness = (props) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ width: "100%"}} className = "dropdown-register">
-                <div style = {{  display: 'flex', justifyContent: 'center' }}>
-
-              <FormControl style = {{ width: '90%' }}
-                placeholder="Ingrese ciudad"
-                onChange={ (e) => setStates(states.filter( (v) => v.includes(e.target.value) ) )  }
-              />
-                </div>
+                
                 {rubros()}
               </Dropdown.Menu>
             </Dropdown>
