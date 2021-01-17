@@ -24,3 +24,7 @@
 .input-mensaje:focus {
   border-color: green;
 }
+
+.col-chat {
+    overflow-y: scroll;
+}

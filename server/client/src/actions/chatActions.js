@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CREATE_CHAT, GET_CHAT_BY_ID, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE, CLEAN_CHAT  } from "./types";
+import { CREATE_CHAT, GET_CHAT_BY_ID, SEND_MESSAGE, GET_CHATS_BY_USER, PUSH_LAST_MESSAGE, CLEAN_CHAT , PUSH_CHAT_IF_NOT_EXIST } from "./types";
 
 export const createChat = (data) => async (dispatch) => {
 
@@ -30,12 +30,6 @@ export const pushMessage = message => {
         type: SEND_MESSAGE,
         payload: message
     }
-
-    // dispatch({
-    //     type: SEND_MESSAGE,
-    //     payload: 
-    // })
-
 }
 
 export const getChatsByUser = (id) => async (dispatch) => {
@@ -69,4 +63,15 @@ export const cleanChat  = () => {
     return {
         type: CLEAN_CHAT
     }
+}
+
+export const pushChatIfNotExist = (chatInfo) => {
+
+    console.log("CHAT INFO", chatInfo)
+
+    return {
+        type : PUSH_CHAT_IF_NOT_EXIST,
+        payload: chatInfo
+    }
+    
 }
