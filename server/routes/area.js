@@ -46,7 +46,6 @@ router.post("/arearelation", async (req, res) => {
         "INSERT INTO free_area  (username_freelancer, rubro_id, area_id, experiencia) VALUES ($1, $2, $3, $4) RETURNING *",
         [user.username_freelancer, rubro.rubro_id, v.id, v.experiencia]
       );
-      // console.log("RESP", resp)
       areas.push(resp.rows[0]);
 
       if (areas.length === info.length) {
