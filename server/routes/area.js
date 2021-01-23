@@ -18,8 +18,6 @@ router.get("/areas/:id", async (req, res) => {
 router.post("/area", async (req, res) => {
   const { rubro_id, nombre } = req.body;
 
-  console.log("RUBRO", req.body)
-
   try {
     const resp = await pool.query(
       "INSERT INTO area (rubro_id, nombre) VALUES ($1, $2)",
