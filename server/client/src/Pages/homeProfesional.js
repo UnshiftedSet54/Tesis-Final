@@ -90,6 +90,8 @@ const HomeProfesional = ({
     // onGetAnuncios(history.location.search);
     onGetPropuestas(auth.user.username_freelancer)
 
+    console.log("PROPUESTA", propuesta)
+
     /* Hacer peticion si aun no tenemos los rubros en redux */
     if (rubros.rubros == null) {
       onGetRubros();
@@ -290,7 +292,7 @@ const HomeProfesional = ({
           <Carousel.Item interval={5000}>
             <img
               className="d-block w-100"
-              src="https://menaalliances.com/wp-content/uploads/2016/04/03-Notebook.jpg"
+              src="/assets/NoteBookSlider.jpg"
               alt="First slide"
               style={{ height: "80vh" }}
             />
@@ -302,7 +304,7 @@ const HomeProfesional = ({
           <Carousel.Item interval={5000}>
             <img
               className="d-block w-100"
-              src="https://images.unsplash.com/photo-1601129490376-e24f32ed8024?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+              src="/assets/LaptopSlider.jpg"
               alt="Third slide"
               style={{ height: "80vh" }}
             />
@@ -314,7 +316,7 @@ const HomeProfesional = ({
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://ak.picdn.net/shutterstock/videos/12015494/thumb/1.jpg"
+              src="/assets/LaptopThirdSlider.jpg"
               alt="Third slide"
               style={{ height: "80vh" }}
             />

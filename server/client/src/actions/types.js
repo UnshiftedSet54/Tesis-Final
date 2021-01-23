@@ -16,6 +16,8 @@ export const NOT_USER = "NOT_USER"
 
 /* Rubros */
 export const GET_RUBROS = 'GET_RUBROS'
+export const GET_RUBRO_INFO = 'GET_RUBRO_INFO'
+export const GET_RUBROS_LOADING = 'GET_RUBROS_LOADING'
 
 /* Areas */
 export const GET_AREAS = 'GET_AREAS'
