@@ -97,9 +97,15 @@ const RegisterProfesional = (props) => {
 
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
-  let copyStates = [...states]
+  const [copyStates , setCopyStates] = useState([])
 
   const [pdf, setPdf] = useState("")
+
+  useEffect(() => {
+
+    setCopyStates(states)
+
+  }, [])
 
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -316,10 +322,10 @@ const RegisterProfesional = (props) => {
 
               <FormControl style = {{ width: '90%' }}
                 placeholder="Ingrese ciudad"
-                onChange={ (e) => setStates(states.filter( (v) => v.includes(e.target.value) ) )  }
+                onChange={ (e) => setCopyStates(states.filter( (v) => v.toLowerCase().includes(e.target.value.toLowerCase()) ) )  }
               />
                 </div>
-                {states.map((value, i) => (
+                {copyStates.map((value, i) => (
                   <Dropdown.Item key = {i} onClick={() => stateChange(value)}>
                     {value}
                   </Dropdown.Item>
