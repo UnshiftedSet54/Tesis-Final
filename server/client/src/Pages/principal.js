@@ -61,7 +61,7 @@ const Principal = ( { onGetRubros, rubros, onGetRubroInfo, rubroInfo, loadingRub
       contenido: 'Consigue al diseñador mas creativo'
     },
     {
-      titulo: "Esritura",
+      titulo: "Escritura",
       src:
       "/assets/EscrituraImagen.jpg",
       contenido: 'Escritura, redaccion y mas'
@@ -291,7 +291,7 @@ const Principal = ( { onGetRubros, rubros, onGetRubroInfo, rubroInfo, loadingRub
                 <div style={{ textAlign: "center" }}>
                   <Image
                     style={{ width: "80px", height: "80px" }}
-                    src="/assets/PagaSeguroImagen.jpg"
+                    src='/assets/pagaseguro.jpg'
                     roundedCircle
                   />
                 </div>

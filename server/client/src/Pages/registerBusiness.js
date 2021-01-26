@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
-
+import axios from 'axios'
 
 /* React Boostrap */
 import {
@@ -38,6 +38,17 @@ import { ToastContainer, toast } from "react-toastify";
 
 const RegisterBusiness = (props) => {
 
+  /* Para saber en que pais se encuentra la persona y así negarle el registro */
+  const [country, setCountry] = useState("")
+
+  const getGeoInfo = async () => {
+
+   const info = await axios.get('https://ipapi.co/json/')
+
+   setCountry(info.data.country)
+
+  }
+
   useEffect(() => {
 
     if (props.error.id != null) {
@@ -50,6 +61,7 @@ const RegisterBusiness = (props) => {
   useEffect(() => {
 
     props.onGetRubros()
+    getGeoInfo()
 
   }, [])
 
@@ -143,6 +155,8 @@ const RegisterBusiness = (props) => {
     }
     else if (userInfo.password !== confirmPassword && userInfo.password.length > 0) {
       errorHandler(setConfirmPasswordError, "Contraseñas no coinciden");
+    } else if (country !== "VE") {
+      toast.warn('No te puedes registrar ya que no eres de Venezuela')
     } else {
       props.onRegister(userInfo, props.history)
     }

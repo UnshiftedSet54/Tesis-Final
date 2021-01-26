@@ -43,12 +43,14 @@ const Navigation = ({ type, auth, onLogOut, anuncios }) => {
       <Popover.Content>
         <Container>
           <Row>
-            <Col>
+            <  Col>
               {" "}
-              <Link to="/micuenta"> Mi cuenta</Link>
+              { auth.user && !auth.user.isbussines ? <Link to="/micuenta"> Mi cuenta</Link> : null}
             </Col>
           </Row>
-          <hr />
+          <div>
+            { auth.user && !auth.user.isbussines ? (<hr/>): null }
+          </div>
           <Row>
             <label
               style={{ width: "100%", textAlign: "center" }}
