@@ -155,9 +155,9 @@ const RegisterBusiness = (props) => {
     }
     else if (userInfo.password !== confirmPassword && userInfo.password.length > 0) {
       errorHandler(setConfirmPasswordError, "Contraseñas no coinciden");
-    } else if (country !== "VE") {
+    } /* else if (country !== "VE") {
       toast.warn('No te puedes registrar ya que no eres de Venezuela')
-    } else {
+    }  */else {
       props.onRegister(userInfo, props.history)
     }
   };

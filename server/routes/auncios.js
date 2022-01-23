@@ -3,15 +3,15 @@ const router = Router();
 const pool = require("../db");
 
 router.get("/anunciosnegocios", async (req, res) => {
-    
-   let propuestasNotRead = await pool.query("SELECT * FROM propuesta where username_freelancer = $1 AND isread = $2", [req.user.username_freelancer, false])
-
+    try{
+    let propuestasNotRead = await pool.query("SELECT * FROM propuesta where username_freelancer = $1 AND isread = $2", [req.user.username_freelancer, false])
     let array = Object.keys(req.query)
         .map((key) => req.query[key] )
 
     let anuncios = await pool.query('SELECT * FROM anuncios order by anuncio_id DESC')
+    console.log('anuncios: ', anuncios)
     let anuncios_area = await pool.query("select * from anuncios_area INNER JOIN area on anuncios_area.area_id = area.area_id")
-
+    console.log('anuncios_area: ', anuncios_area)
    let final_result = anuncios.rows.map(anuncio => {
 
         let filtro = anuncios_area.rows.filter(a_area  =>  a_area.anuncio_id == anuncio.anuncio_id).map(v => {
@@ -20,7 +20,8 @@ router.get("/anunciosnegocios", async (req, res) => {
                area_id: v.area_id,
                nombre : v.nombre
             }
-        } )
+        } 
+        )
         return {
             ...anuncio,
             area_Info : filtro,
@@ -34,13 +35,12 @@ router.get("/anunciosnegocios", async (req, res) => {
     if ( array.includes("0") && (req.query.value === undefined || req.query.value === "" )  ) {
         return res.status(200).json({ anuncios: final_result, notificationsPropuestas: propuestasNotRead.rows.length  })
 
-    }
-
-    else {
+    } else {
 
         if (req.query.value == undefined) {
 
             let resultado_final = final_result.filter(v => { 
+                console.log(`esta es una prueba`, final_result)
                 return array.includes(v.rubro_id.toString())
               })
                        
@@ -49,14 +49,17 @@ router.get("/anunciosnegocios", async (req, res) => {
         }  else {
 
             let resultado_final = final_result.filter(v => { 
-               return array.includes(v.rubro_id.toString()) && v.titulo.toLowerCase().includes(req.query.value.toLowerCase()) 
+                console.log('search', array)
+               return array.includes(v.rubro_id.toString()) || v.titulo.toLowerCase().includes(req.query.value.toLowerCase()) 
              })
                      
             return res.status(200).json({ anuncios: resultado_final, notificationsPropuestas: propuestasNotRead.rows.length })
         }
 
     }
-
+    }catch(e){
+        console.log(e)
+    }
 
 });
 

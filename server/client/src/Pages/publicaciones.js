@@ -338,15 +338,14 @@ const Publicaciones = (props) => {
   /* FINALIZA SUGGEST */
 
   const addTag = () => {
-    
-    let newValue = props.areas.find(v => v.nombre === value)
-    
-    let checkIfExists = chips.find(v => v.area_id === newValue.area_id )
-
-    if(!checkIfExists) {
-      setChips((oldValues) => [...oldValues, newValue]);
+    if(value){
+      let newValue = props.areas.find(v => v.nombre === value)
+      let checkIfExists = chips.find(v => v.area_id === newValue.area_id )
+      if(!checkIfExists) {
+        setChips((oldValues) => [...oldValues, newValue]);
+      }
+      setValue("")
     }
-    setValue("")
 
   };
 
@@ -358,37 +357,37 @@ const Publicaciones = (props) => {
   }
 
   const sendData = () => {
-
     if (titulo === "") {
       setTituloError("Por favor ingrese un titulo")
       setTimeout(() => {
         setTituloError("")
       }, 2000)
-    } if (descripcion === "" ) {
+      return
+    } else if (descripcion === "" ) {
       setDescriptionError("Por favor ingrese una descripcion")
       setTimeout(() => {
         setDescriptionError("")
       }, 2000)
-    } if (selectedRubro.nombre == "Seleccionar rubro") {
-
+      return
+    } else if (selectedRubro.nombre === "Seleccionar rubro") {
       setSelectedRubroError("Por favor ingrese algun rubro")
       setTimeout(() => {
         setSelectedRubroError("")
       }, 2000)
-
-    } if (chips.length === 0) {
+      return
+    } else if (chips.length === 0) {
       setChipsError("Error, ingrese chips")
       setTimeout(() => {
         setChipsError("")
       }, 2000)
-
-    } if (disponibilidad === "") {
+      return
+    }else if (disponibilidad === "") {
 
       setDisponibilidadError("Error, ingrese algun valor")
       setTimeout(() => {
         setDisponibilidadError("")
       }, 2000)
-
+      return
     }  else {
       setPostInfo({
         titulo,
@@ -444,7 +443,7 @@ const Publicaciones = (props) => {
                           <Card.Text>{v.descripcion}</Card.Text>
                         )}
                       </div>
-                      {/* <button >Sexo</button> */}
+                      {/* <button >trry</button> */}
                       {isEditMode[i]
                         ? renderButtonsInEditMode(v, i)
                         : renderButtonsNormalMode(v, i)}
@@ -517,7 +516,7 @@ const Publicaciones = (props) => {
                         style={{ backgroundColor: 'green' }}
                       >
                         <div className="chip-element-rubro">
-                          <label>{v.nombre}</label>
+                          <label>{v.nombre || ""}</label>
                           <FontAwesomeIcon
                             className="icon-rubro-container"
                             icon={faTimesCircle}

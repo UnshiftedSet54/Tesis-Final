@@ -52,7 +52,7 @@ router.get('/getuserinfologged', async (req, res) => {
 
         try {
             const resp = await pool.query("select * from freelancerusuario inner join free_area on freelancerusuario.username_freelancer = free_area.username_freelancer inner join rubro on rubro.rubro_id = free_area.rubro_id  inner join area on area.area_id = free_area.area_id where freelancerusuario.username_freelancer = $1", [req.user.username_freelancer])
-    
+            
             const propuestas = await pool.query("select * from propuesta where user_prop = $1", [req.user.username_freelancer])
     
             const rubro = await pool.query("select * from rubro")

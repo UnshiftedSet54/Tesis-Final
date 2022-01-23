@@ -78,7 +78,7 @@ const ChatPage = (props) => {
         
         props.onSendMessage(message);
         
-          let checkIfExist = chatsUser.current.find(value => value.chat_id == props.match.params.id)
+          let checkIfExist = chatsUser.current.find(value => value.chat_id === props.match.params.id)
 
           if (!!!checkIfExist) {
             props.onPushChatIfNotExist({

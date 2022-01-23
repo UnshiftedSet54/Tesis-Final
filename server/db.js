@@ -5,7 +5,7 @@ let pool
 if (process.env.NODE_ENV === 'production') {
 
       pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
+        connectionString: /* process.env.DATABASE_URL */"postgresql://postgres:123@localhost:5432/tesis2",
         ssl: {
           rejectUnauthorized: false
         }
@@ -15,10 +15,10 @@ if (process.env.NODE_ENV === 'production') {
    
       pool = new Pool({
         user: "postgres",
-        password: "12345",
+        password: "123",
         host: "localhost",
         port: 5432,
-        database: "PruebaTesis"
+        database: "tesis2"
     }) 
 }
 
@@ -29,6 +29,7 @@ pool.connect((err, client, done) => {
         console.log("Error al conectar", err.stack)
     }else {
         console.log("Conectado satisfactoriamente")
+        console.log(process.env.DATABASE_URL)
     }
 })
 

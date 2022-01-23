@@ -175,9 +175,11 @@ const HomeProfesional = ({
 
 
   const getRubroByAnuncio = (rubroId) => {
+    console.log('rubroid ->', !rubros.rubros.find(v => v.rubro_id === rubroId).nombre ? null:false)
+    const selectedRubro = rubros.rubros.find(v => v.rubro_id === rubroId).nombre
     return (
       <div>
-        { rubros.rubros !== null ? rubros.rubros.find(v => v.rubro_id == rubroId).nombre : null} 
+        { rubros.rubros !== null ? selectedRubro : null} 
       </div>
     )
   }

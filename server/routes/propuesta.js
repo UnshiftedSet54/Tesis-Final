@@ -13,6 +13,7 @@ router.post('/propuesta', async (req, res) => {
 })
 
 router.get('/propuesta', async (req, res) => {
+    console.log(req.user)
 
     let resp = await pool.query("SELECT * FROM propuesta WHERE user_prop = $1 order by propuesta_id desc", [req.user.username_freelancer])
 
